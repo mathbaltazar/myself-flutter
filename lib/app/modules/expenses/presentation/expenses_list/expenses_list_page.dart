@@ -107,8 +107,15 @@ class ExpensesListPage extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        icon: const Icon(Icons.delete_forever_rounded),
-        content: const Text('Exclusive a despesa ?'),
+        icon: const Icon(
+          Icons.delete_forever_rounded,
+          size: 48,
+        ),
+        content: const Text(
+          'Excluir a despesa ?',
+          textAlign: TextAlign.center,
+        ),
+        insetPadding: EdgeInsets.all(16),
         actions: [
           TextButton(
             onPressed: () {
@@ -116,12 +123,17 @@ class ExpensesListPage extends StatelessWidget {
             },
             child: const Text('Cancelar'),
           ),
-          TextButton(
+          OutlinedButton(
             onPressed: () {
               controller.deleteExpense(expenseId);
               Modular.to.pop(true);
             },
-            child: const Text('Excluir'),
+            child: Text(
+              'Excluir',
+              style: TextStyle(
+                color: MyselffTheme.errorColor,
+              ),
+            ),
           ),
         ],
       ),
