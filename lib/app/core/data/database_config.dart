@@ -1,4 +1,4 @@
-import 'package:myself_flutter/app/core/data/database_structure.dart';
+import 'package:myselff_flutter/app/core/data/database_structure.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 

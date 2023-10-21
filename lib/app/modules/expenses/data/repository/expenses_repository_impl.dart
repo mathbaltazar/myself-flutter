@@ -1,7 +1,7 @@
-import 'package:myself_flutter/app/core/data/database_structure.dart';
-import 'package:myself_flutter/app/core/data/typeconverters/type_converters.dart';
-import 'package:myself_flutter/app/core/utils/formatters/date_formatter.dart';
-import 'package:myself_flutter/app/modules/expenses/domain/model/expense_model.dart';
+import 'package:myselff_flutter/app/core/data/database_structure.dart';
+import 'package:myselff_flutter/app/core/data/typeconverters/type_converters.dart';
+import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../domain/repository/expenses_repository.dart';

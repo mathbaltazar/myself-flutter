@@ -1,4 +1,4 @@
-import 'package:myself_flutter/app/core/utils/formatters/date_formatter.dart';
+import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 
 class ExpenseModel {
   String id;

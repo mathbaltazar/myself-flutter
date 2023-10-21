@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myself_flutter/app/core/theme/color_schemes.g.dart';
-import 'package:myself_flutter/app/core/utils/formatters/currency_formatter.dart';
-import 'package:myself_flutter/app/core/utils/formatters/date_formatter.dart';
+import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
+import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
+import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 
 import '../../../domain/model/expense_model.dart';
 
@@ -28,8 +28,8 @@ class ExpenseListItem extends StatelessWidget {
               Icon(
                 Icons.paid,
                 color: expense.paid
-                    ? MyselfTheme.colorPrimary
-                    : MyselfTheme.errorColor,
+                    ? MyselffTheme.colorPrimary
+                    : MyselffTheme.errorColor,
                 semanticLabel: expense.paid ? 'Pago! :)' : 'Não pago =(',
               ),
               const SizedBox(width: 8),

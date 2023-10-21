@@ -1,4 +1,4 @@
-import 'package:myself_flutter/app/core/data/repository/crud_repository.dart';
+import 'package:myselff_flutter/app/core/data/repository/crud_repository.dart';
 
 import '../model/expense_model.dart';
 

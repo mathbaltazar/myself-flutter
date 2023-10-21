@@ -1,12 +1,12 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:myself_flutter/app/core/routes/app_routes.dart';
-import 'package:myself_flutter/app/core/services/injection_service.dart';
-import 'package:myself_flutter/app/modules/expenses/data/repository/expenses_repository_impl.dart';
-import 'package:myself_flutter/app/modules/expenses/domain/repository/expenses_repository.dart';
-import 'package:myself_flutter/app/modules/expenses/presentation/save_expense/save_expense_controller.dart';
-import 'package:myself_flutter/app/modules/expenses/presentation/save_expense/save_expense_page.dart';
-import 'package:myself_flutter/app/modules/expenses/presentation/expenses_list/expenses_list_controller.dart';
-import 'package:myself_flutter/app/modules/expenses/presentation/expenses_list/expenses_list_page.dart';
+import 'package:myselff_flutter/app/core/routes/app_routes.dart';
+import 'package:myselff_flutter/app/core/services/injection_service.dart';
+import 'package:myselff_flutter/app/modules/expenses/data/repository/expenses_repository_impl.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/repository/expenses_repository.dart';
+import 'package:myselff_flutter/app/modules/expenses/presentation/save_expense/save_expense_controller.dart';
+import 'package:myselff_flutter/app/modules/expenses/presentation/save_expense/save_expense_page.dart';
+import 'package:myselff_flutter/app/modules/expenses/presentation/expenses_list/expenses_list_controller.dart';
+import 'package:myselff_flutter/app/modules/expenses/presentation/expenses_list/expenses_list_page.dart';
 
 class ExpenseModule extends Module {
   @override

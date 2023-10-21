@@ -1,6 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
-import 'package:myself_flutter/app/core/routes/app_routes.dart';
+import 'package:myselff_flutter/app/core/routes/app_routes.dart';
 
 import '../../domain/model/expense_model.dart';
 import '../../domain/repository/expenses_repository.dart';

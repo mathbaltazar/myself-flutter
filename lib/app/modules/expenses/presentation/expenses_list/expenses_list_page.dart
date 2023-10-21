@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:myself_flutter/app/core/routes/app_routes.dart';
-import 'package:myself_flutter/app/core/theme/color_schemes.g.dart';
-import 'package:myself_flutter/app/modules/expenses/domain/model/expense_model.dart';
+import 'package:myselff_flutter/app/core/routes/app_routes.dart';
+import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
 
 import 'components/expense_item_details.dart';
 import 'components/expense_list_item.dart';
@@ -42,7 +42,7 @@ class ExpensesListPage extends StatelessWidget {
                   child: Text(
                     'Registros',
                     style: TextStyle(
-                        fontSize: 16, color: MyselfTheme.colorPrimary),
+                        fontSize: 16, color: MyselffTheme.colorPrimary),
                   ),
                 ),
               ),

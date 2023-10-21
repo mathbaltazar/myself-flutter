@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myself_flutter/app/core/theme/color_schemes.g.dart';
-import 'package:myself_flutter/app/core/utils/formatters/currency_formatter.dart';
-import 'package:myself_flutter/app/core/utils/formatters/date_formatter.dart';
-import 'package:myself_flutter/app/modules/expenses/domain/model/expense_model.dart';
+import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
+import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
+import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
 
 class ExpenseItemDetails extends StatelessWidget {
   const ExpenseItemDetails({
@@ -31,7 +31,7 @@ class ExpenseItemDetails extends StatelessWidget {
               Expanded(
                 child: Text('Detalhes',
                     style: TextStyle(
-                        fontSize: 16, color: MyselfTheme.colorPrimary)),
+                        fontSize: 16, color: MyselffTheme.colorPrimary)),
               ),
               IconButton.outlined(
                 onPressed: onEdit,
@@ -41,7 +41,7 @@ class ExpenseItemDetails extends StatelessWidget {
                 onPressed: onDelete,
                 icon: Icon(
                   Icons.delete_forever,
-                  color: MyselfTheme.errorColor,
+                  color: MyselffTheme.errorColor,
                 ),
               )
             ],

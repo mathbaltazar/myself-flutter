@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
-import 'package:myself_flutter/app/core/theme/color_schemes.g.dart';
-import 'package:myself_flutter/app/core/utils/formatters/currency_formatter.dart';
+import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
+import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
 import '../model/resume_model.dart';
 
 class ExpensesResumeBoard extends StatefulWidget {
@@ -38,7 +38,7 @@ class _ExpensesResumeBoardState extends State<ExpensesResumeBoard>
       margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
           border: Border.all(
-            color: MyselfTheme.outlineColor,
+            color: MyselffTheme.outlineColor,
           ),
           borderRadius: BorderRadius.circular(16)),
       child: Row(
@@ -77,7 +77,7 @@ class _ExpensesResumeBoardState extends State<ExpensesResumeBoard>
                             Icons.check_circle,
                             size: 36,
                             color: _progressScale() == 1
-                                ? MyselfTheme.colorPrimary
+                                ? MyselffTheme.colorPrimary
                                 : Colors.black54,
                           ),
                         ],
@@ -103,7 +103,7 @@ class _ExpensesResumeBoardState extends State<ExpensesResumeBoard>
                                     ? FontWeight.bold
                                     : FontWeight.normal,
                                 color: _progressScale() == 1
-                                    ? MyselfTheme.colorPrimary
+                                    ? MyselffTheme.colorPrimary
                                     : Colors.black54),
                           ),
                         ],

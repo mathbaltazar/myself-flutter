@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
-import 'package:myself_flutter/app/core/services/message_service.dart';
-import 'package:myself_flutter/app/core/utils/domain_utils.dart';
-import 'package:myself_flutter/app/core/utils/formatters/currency_formatter.dart';
-import 'package:myself_flutter/app/core/utils/formatters/date_formatter.dart';
-import 'package:myself_flutter/app/modules/expenses/domain/model/expense_model.dart';
-import 'package:myself_flutter/app/modules/expenses/domain/repository/expenses_repository.dart';
+import 'package:myselff_flutter/app/core/services/message_service.dart';
+import 'package:myselff_flutter/app/core/utils/domain_utils.dart';
+import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
+import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/repository/expenses_repository.dart';
 
 part 'save_expense_controller.g.dart';
 

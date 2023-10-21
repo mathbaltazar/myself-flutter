@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myself_flutter/app/core/services/message_service.dart';
-import 'package:myself_flutter/app/core/theme/color_schemes.g.dart';
+import 'package:myselff_flutter/app/core/services/message_service.dart';
+import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -16,12 +16,12 @@ class AppWidget extends StatelessWidget {
       title: 'myself',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: MyselfTheme.lightColorScheme,
+        colorScheme: MyselffTheme.lightColorScheme,
         textTheme: GoogleFonts.montserratTextTheme()
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
-        colorScheme: MyselfTheme.darkColorScheme,
+        colorScheme: MyselffTheme.darkColorScheme,
       ),
     );
   }

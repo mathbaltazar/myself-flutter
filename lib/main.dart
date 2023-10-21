@@ -28,7 +28,7 @@ void main() async {
       ),
     );
   }, (error, stack) {
-    print('MYSELF-FLUTTER error > $error');
-    print('MYSELF-FULTTER stack > $stack');
+    print('MYSELFF-FLUTTER error > $error');
+    print('MYSELFF-FLUTTER stack > $stack');
   });
 }
