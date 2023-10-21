@@ -13,7 +13,7 @@ class AppWidget extends StatelessWidget {
       scaffoldMessengerKey: MessageService.instance(context),
       routeInformationParser: Modular.routeInformationParser,
       routerDelegate: Modular.routerDelegate,
-      title: 'myself',
+      title: 'myselff',
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: MyselffTheme.lightColorScheme,
