@@ -1,7 +1,6 @@
+import 'package:myself_flutter/app/core/data/repository/crud_repository.dart';
+
 import '../model/expense_model.dart';
 
-abstract class ExpensesRepository {
-  List<ExpenseModel> findAll();
-
-  void save(ExpenseModel expense);
+abstract class ExpensesRepository extends CrudRepository<ExpenseModel> {
 }

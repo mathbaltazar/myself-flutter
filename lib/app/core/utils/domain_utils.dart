@@ -1,6 +1,6 @@
 import 'package:uuid/uuid.dart';
 
-class ModelUtils {
+class DomainUtils {
   static const Uuid _uuid = Uuid();
 
   static String nextId() {

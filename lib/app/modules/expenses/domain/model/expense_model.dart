@@ -1,15 +1,27 @@
+import 'package:myself_flutter/app/core/utils/formatters/date_formatter.dart';
+
 class ExpenseModel {
+  String id;
+  bool paid;
+  double amount;
+  String description;
+  DateTime paymentDate;
+
   ExpenseModel({
     required this.id,
-    this.value = 0,
-    this.paid = true,
-    this.description = '',
-    this.paymentDate,
+    required this.paymentDate,
+    required this.description,
+    required this.amount,
+    required this.paid,
   });
 
-  String id;
-  double value;
-  bool paid;
-  String? description;
-  DateTime? paymentDate;
+  Map<String, Object> toMap() {
+    return {
+      'id' : id,
+      'paid' : paid,
+      'amount' : amount,
+      'description' : description,
+      'paymentDate' : paymentDate.format(database: true)
+    };
+  }
 }

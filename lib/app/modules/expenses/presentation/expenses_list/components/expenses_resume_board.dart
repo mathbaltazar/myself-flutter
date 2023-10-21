@@ -1,73 +1,131 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:myself_flutter/app/core/theme/color_schemes.g.dart';
+import 'package:myself_flutter/app/core/utils/formatters/currency_formatter.dart';
+import '../model/resume_model.dart';
 
-class ExpensesResumeBoard extends StatelessWidget {
+class ExpensesResumeBoard extends StatefulWidget {
   const ExpensesResumeBoard({
     super.key,
     required this.onPreviousMonth,
     required this.onNextMonth,
-    required this.currentDate,
-    required this.totalExpenses,
-    required this.totalPaid,
+    required this.resume,
   });
 
   final void Function() onPreviousMonth;
   final void Function() onNextMonth;
-  final DateTime currentDate;
-  final double totalExpenses;
-  final double totalPaid;
+  final ResumeModel resume;
+
+  @override
+  State<ExpensesResumeBoard> createState() => _ExpensesResumeBoardState();
+}
+
+class _ExpensesResumeBoardState extends State<ExpensesResumeBoard>
+    with TickerProviderStateMixin<ExpensesResumeBoard> {
+  AnimationController? animController;
+  double startAnim = 0;
+
+  @override
+  void initState() {
+    animController = AnimationController(vsync: this);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: MyselfTheme.outlineColor)),
+          border: Border.all(
+            color: MyselfTheme.outlineColor,
+          ),
+          borderRadius: BorderRadius.circular(16)),
       child: Row(
         children: [
           IconButton(
             icon: const Icon(Icons.chevron_left),
-            onPressed: onPreviousMonth,
+            onPressed: () {
+              startAnim = -1;
+              animController?.forward(from: 0);
+              widget.onPreviousMonth();
+            },
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 16, top: 12),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(DateFormat.yMMMM().format(currentDate)),
-                  const SizedBox(height: 30),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Total pago'),
-                      Text('Total do mês'),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  LinearProgressIndicator(
-                    value: _progressScale(),
-                    valueColor:
-                        AlwaysStoppedAnimation(MyselfTheme.colorPrimary),
-                    backgroundColor: Colors.black26,
-                  ),
-                  const SizedBox(height: 10),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text('R\$ ${totalPaid.toStringAsFixed(2)}'),
-                      Text('R\$ ${totalExpenses.toStringAsFixed(2)}'),
+                      Stack(
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          TweenAnimationBuilder<double>(
+                            tween: Tween(begin: 0.0, end: _progressScale()),
+                            duration: const Duration(seconds: 1),
+                            builder: (ctx, value, _) =>
+                                CircularProgressIndicator(
+                              value: value,
+                              strokeCap: StrokeCap.round,
+                              strokeAlign: 12,
+                              backgroundColor: Colors.black26,
+                            ),
+                          ),
+                          Icon(
+                            Icons.check_circle,
+                            size: 36,
+                            color: _progressScale() == 1
+                                ? MyselfTheme.colorPrimary
+                                : Colors.black54,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Total do mês'),
+                          Text(
+                            'R\$ ${widget.resume.totalExpenses.formatCurrency()}',
+                            style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black87),
+                          ),
+                          const SizedBox(height: 10),
+                          const Text('Total pago'),
+                          Text(
+                            'R\$ ${widget.resume.totalPaid.formatCurrency()}',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: _progressScale() == 1
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: _progressScale() == 1
+                                    ? MyselfTheme.colorPrimary
+                                    : Colors.black54),
+                          ),
+                        ],
+                      ),
                     ],
-                  )
+                  ),
+                  const SizedBox(height: 15),
+                  Text(DateFormat.yMMMM().format(widget.resume.currentDate),
+                      style: const TextStyle(fontSize: 16)),
                 ],
-              ),
+              )
+                  .animate(controller: animController)
+                  .slideX(begin: startAnim, end: 0),
             ),
           ),
           IconButton(
             icon: const Icon(Icons.chevron_right_rounded),
-            onPressed: onNextMonth,
+            onPressed: () {
+              startAnim = 1;
+              animController?.forward(from: 0);
+              widget.onNextMonth();
+            },
           ),
         ],
       ),
@@ -75,6 +133,8 @@ class ExpensesResumeBoard extends StatelessWidget {
   }
 
   _progressScale() {
-    return totalExpenses == 0 ? 1.0 : totalPaid / totalExpenses;
+    return widget.resume.totalExpenses == 0
+        ? 1.0
+        : widget.resume.totalPaid / widget.resume.totalExpenses;
   }
 }

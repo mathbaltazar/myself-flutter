@@ -1,54 +1,88 @@
-import 'package:myself_flutter/app/core/commons/model_utils.dart';
-import 'package:myself_flutter/app/core/services/reactive_service.dart';
-import 'package:myself_flutter/app/modules/expenses/domain/repository/expenses_repository.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mobx/mobx.dart';
+import 'package:myself_flutter/app/core/routes/app_routes.dart';
 
 import '../../domain/model/expense_model.dart';
-import 'expenses_list_states.dart';
+import '../../domain/repository/expenses_repository.dart';
+import 'model/resume_model.dart';
 
-class ExpensesListController extends ReactiveService<IExpensesListState> {
-  ExpensesListController() : super(ExpensesListStart());
-  ExpensesRepository? repository; // todo inject
+part 'expenses_list_controller.g.dart';
 
-  DateTime date = DateTime.now().copyWith(day: 1);
+class ExpensesListController = _ExpensesListController
+    with _$ExpensesListController;
 
-  double totalPaid = 0.0;
-  double totalExpenses = 0.0;
-
-  List<ExpenseModel> expenses = [
-    ExpenseModel(id: ModelUtils.nextId(), value: 20, paid: true, description: 'Despesa', paymentDate: DateTime.utc(2020, 5, 26)),
-    ExpenseModel(id: ModelUtils.nextId(), value: 20, paid: false, description: 'Despesa', paymentDate: DateTime.utc(2020, 5, 26)),
-    ExpenseModel(id: ModelUtils.nextId(), value: 20, paid: false, description: 'Despesa', paymentDate: DateTime.utc(2020, 5, 26)),
-    ExpenseModel(id: ModelUtils.nextId(), value: 20, paid: true, description: 'Despesa', paymentDate: DateTime.utc(2020, 5, 26)),
-    ExpenseModel(id: ModelUtils.nextId(), value: 20, paid: true, description: 'Despesa', paymentDate: DateTime.utc(2020, 5, 26)),
-  ];
-
-  void init() async {
-    _updateState();
+abstract class _ExpensesListController with Store {
+  _ExpensesListController(this.repository) {
+    loadExpenses(resumeModel.currentDate);
   }
 
+  final ExpensesRepository repository;
+
+  @observable
+  ResumeModel resumeModel = ResumeModel.instance();
+
+  @action
+  setResumeModel(value) => resumeModel = value;
+
+  @observable
+  ObservableList<ExpenseModel> expenses = ObservableList();
+
   void previousMonth() {
-    date = date.subtract(const Duration(days: 1)).copyWith(day: 1);
-    _updateState();
+    var date = resumeModel.currentDate
+        .subtract(const Duration(days: 1))
+        .copyWith(day: 1);
+    loadExpenses(date);
   }
 
   void nextMonth() {
-    date = date.add(const Duration(days: 31)).copyWith(day: 1);
-    _updateState();
+    var date =
+        resumeModel.currentDate.add(const Duration(days: 31)).copyWith(day: 1);
+    loadExpenses(date);
   }
 
-  _updateState() {
-    emit(ExpensesListLoading());
+  void editExpense(String id) async {
+    dynamic persisted = await Modular.to
+        .popAndPushNamed(AppRoutes.saveExpense, arguments: {'expense_id': id});
+    if (persisted == true) {
+      loadExpenses(resumeModel.currentDate);
+    }
+  }
 
-    // TODO expenses = repository.findAllByDate(this.date);
+  void deleteExpense(String id) async {
+    repository.deleteById(id);
+    loadExpenses(resumeModel.currentDate);
+  }
 
-    totalExpenses = 0.0;
-    totalPaid = 0.0;
+  void togglePaid(ExpenseModel expense) async {
+    expense.paid = !expense.paid;
+    repository.save(expense);
+    loadExpenses(resumeModel.currentDate);
+  }
 
-    for (var element in expenses) {
-      totalExpenses += element.value;
-      if (element.paid) totalPaid += element.value;
+  void loadExpenses(DateTime currentDate) async {
+    List<ExpenseModel> loadedExpenses = await repository.findAll();
+    loadedExpenses = loadedExpenses
+        .where((expense) =>
+            expense.paymentDate.year == currentDate.year &&
+            expense.paymentDate.month == currentDate.month)
+        .toList();
+
+    double totalExpenses = 0;
+    double totalPaid = 0;
+
+    for (var expense in loadedExpenses) {
+      totalExpenses += expense.amount;
+      if (expense.paid) {
+        totalPaid += expense.amount;
+      }
     }
 
-    emit(ExpensesListSuccess());
+    setResumeModel(ResumeModel(
+      currentDate: currentDate,
+      totalExpenses: totalExpenses,
+      totalPaid: totalPaid,
+    ));
+    expenses.clear();
+    expenses.addAll(loadedExpenses);
   }
 }

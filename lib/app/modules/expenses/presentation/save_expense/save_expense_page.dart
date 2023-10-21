@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:myself_flutter/app/core/commons/formatters/date_formatter.dart';
-import 'package:myself_flutter/app/core/commons/mask_util.dart';
+import 'package:myself_flutter/app/core/utils/mask_util.dart';
 import 'package:myself_flutter/app/core/theme/color_schemes.g.dart';
 
 import 'save_expense_controller.dart';
@@ -20,8 +19,8 @@ class SaveExpensePage extends StatefulWidget {
 class _SaveExpensePageState extends State<SaveExpensePage> {
   @override
   void initState() {
-    widget.controller.editExpense(widget.expenseId);
     super.initState();
+    widget.controller.editExpense(widget.expenseId);
   }
 
   @override
@@ -70,30 +69,35 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
                           initialEntryMode: DatePickerEntryMode.calendarOnly,
                           initialDatePickerMode: DatePickerMode.day,
                         );
-                        widget.controller.dateTimeTextController.text =
-                            date!.format();
+                        widget.controller.setDate(date);
                       },
-                      canRequestFocus: false,
+                      readOnly: true,
                       keyboardType: TextInputType.none,
                       decoration: const InputDecoration(
                         labelText: 'Quando ?',
                         icon: Icon(Icons.calendar_month),
                       ),
                     ),
-                    TextField(
-                      controller: widget.controller.descriptionTextController,
-                      decoration: const InputDecoration(
-                        labelText: 'Descrição',
-                        icon: Icon(Icons.text_snippet),
+                    Observer(
+                      builder: (_) => TextField(
+                        controller: widget.controller.descriptionTextController,
+                        decoration: InputDecoration(
+                          labelText: 'Descrição',
+                          icon: const Icon(Icons.text_snippet),
+                          errorText: widget.controller.descriptionError,
+                        ),
                       ),
                     ),
-                    TextField(
-                      controller: widget.controller.valueTextController,
-                      inputFormatters: [MaskUtil.currency()],
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Valor',
-                        icon: Icon(Icons.attach_money),
+                    Observer(
+                      builder:(_) => TextField(
+                        controller: widget.controller.valueTextController,
+                        inputFormatters: [MaskUtil.currency()],
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Valor',
+                          icon: const Icon(Icons.attach_money),
+                          errorText: widget.controller.amountError,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -103,24 +107,13 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
                         const SizedBox(width: 15),
                         const Text('Está pago?'),
                         const Spacer(),
-                        Switch(
-                          value: widget.controller.paid,
-                          onChanged: (checked) {
-                            setState(() {
-                              widget.controller.paid = checked;
-                            });
-                          },
+                        Observer(
+                          builder:(_) => Switch(
+                            value: widget.controller.paid,
+                            onChanged: widget.controller.setPaid,
+                          ),
                         ),
                       ],
-                    ),
-                    Observer(
-                      builder: (_) => Text(
-                        widget.controller.errorMessage ?? '',
-                        style: TextStyle(
-                          color: MyselfTheme.errorColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                     ),
                   ],
                 ),
