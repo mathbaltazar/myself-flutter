@@ -14,7 +14,6 @@ dependencies:
   flutter_mobx: ^2.0.6
   mobx: 2.2.0
   flutter_modular: ^5.0.3
-  uuid: 3.0.7
   sqflite: ^2.3.0
   flutter_animate: ^4.2.0+1
   google_fonts: ^6.1.0
