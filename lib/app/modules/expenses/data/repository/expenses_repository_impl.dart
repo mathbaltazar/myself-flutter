@@ -1,6 +1,4 @@
 import 'package:myselff_flutter/app/core/data/database_structure.dart';
-import 'package:myselff_flutter/app/core/data/typeconverters/type_converters.dart';
-import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -10,32 +8,22 @@ class ExpensesRepositoryImpl extends ExpensesRepository {
   @override
   Future<List<ExpenseModel>> findAll() async {
     final db = await getDatabase();
-    var maps = await db.query(DatabaseTables.expense);
+    List<Map<String, Object?>> queryResult = await db.query(DatabaseTables.expense, orderBy: 'id DESC');
     List<ExpenseModel> expensesList = List.generate(
-      maps.length,
-      (index) => ExpenseModel(
-          id: maps[index]['id'].toString(),
-          paymentDate: maps[index]['paymentDate'].toString().parseFormatted(database: true),
-          description: maps[index]['description'].toString(),
-          amount: maps[index]['amount'].parseDouble(),
-          paid: maps[index]['paid'].parseBoolean()),
+      queryResult.length,
+      (index) => ExpenseModel.fromMap(queryResult[index]),
     );
     return expensesList;
   }
 
   @override
-  Future<ExpenseModel?> findById(String id) async {
+  Future<ExpenseModel?> findById(int id) async {
     final db = await getDatabase();
-    var query = await db
+    var queryResult = await db
         .query(DatabaseTables.expense, where: 'id = ?', whereArgs: [id]);
-    var expenseMap = query.firstOrNull;
-    if (expenseMap != null) {
-      return ExpenseModel(
-          id: id,
-          paymentDate: expenseMap['paymentDate'].toString().parseFormatted(database: true),
-          description: expenseMap['description'].toString(),
-          amount: expenseMap['amount'].parseDouble(),
-          paid: expenseMap['paid'].parseBoolean());
+    Map<String, Object?>? map = queryResult.firstOrNull;
+    if (map != null) {
+      return ExpenseModel.fromMap(map);
     }
     return null;
   }
@@ -62,7 +50,7 @@ class ExpensesRepositoryImpl extends ExpensesRepository {
   }
 
   @override
-  void deleteById(String id) async {
+  void deleteById(int id) async {
     final db = await getDatabase();
     await db.delete(
       DatabaseTables.expense,

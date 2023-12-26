@@ -12,7 +12,7 @@ mixin _$SaveExpenseController on _SaveExpenseController, Store {
   Computed<bool>? _$editingComputed;
 
   @override
-  bool get editing => (_$editingComputed ??= Computed<bool>(() => super.editing,
+  bool get isEdit => (_$editingComputed ??= Computed<bool>(() => super.isEdit,
           name: '_SaveExpenseController.editing'))
       .value;
 
@@ -20,13 +20,13 @@ mixin _$SaveExpenseController on _SaveExpenseController, Store {
       Atom(name: '_SaveExpenseController.editingId', context: context);
 
   @override
-  String? get editingId {
+  int? get editingId {
     _$editingIdAtom.reportRead();
     return super.editingId;
   }
 
   @override
-  set editingId(String? value) {
+  set editingId(int? value) {
     _$editingIdAtom.reportWrite(value, super.editingId, () {
       super.editingId = value;
     });
@@ -134,7 +134,7 @@ editingId: ${editingId},
 descriptionError: ${descriptionError},
 amountError: ${amountError},
 paid: ${paid},
-editing: ${editing}
+editing: ${isEdit}
     ''';
   }
 }

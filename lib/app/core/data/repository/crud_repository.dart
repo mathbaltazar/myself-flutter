@@ -9,11 +9,11 @@ abstract class CrudRepository<T> {
 
   void save(T model);
 
-  Future<T?> findById(String id);
+  Future<T?> findById(int id);
 
   void update(T model);
 
-  void deleteById(String id);
+  void deleteById(int id);
 
   Future<Database> getDatabase() async {
     _database ??= await DatabaseConfig.getInstance();

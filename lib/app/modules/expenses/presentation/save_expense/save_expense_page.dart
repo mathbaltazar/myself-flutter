@@ -10,7 +10,7 @@ class SaveExpensePage extends StatefulWidget {
       {super.key, required this.controller, required this.expenseId});
 
   final SaveExpenseController controller;
-  final String? expenseId;
+  final int? expenseId;
 
   @override
   State<SaveExpensePage> createState() => _SaveExpensePageState();
@@ -30,7 +30,7 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
         appBar: AppBar(
           title: Observer(
             builder: (_) =>
-                Text(widget.controller.editing ? 'Editar' : 'Despesa'),
+                Text(widget.controller.isEdit ? 'Editar' : 'Despesa'),
           ),
         ),
         body: SingleChildScrollView(

@@ -9,7 +9,7 @@ class MessageService {
     if (_messenger?.currentState == null) {
       throw 'Message service is not initialized';
     }
-    _messenger!.currentState?.showSnackBar(SnackBar(
+    _messenger!.currentState!.showSnackBar(SnackBar(
       duration: const Duration(seconds: 1),
       behavior: SnackBarBehavior.floating,
       content: Text(message),

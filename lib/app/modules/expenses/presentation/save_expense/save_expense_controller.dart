@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:myselff_flutter/app/core/services/message_service.dart';
-import 'package:myselff_flutter/app/core/utils/domain_utils.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
@@ -25,11 +24,9 @@ abstract class _SaveExpenseController with Store {
   final TextEditingController dateTimeTextController =
       TextEditingController(text: DateTime.now().format());
 
-  @observable
-  String? editingId;
+  int? editingId;
 
-  @computed
-  bool get editing => editingId != null;
+  bool get isEdit => editingId != null;
 
   @observable
   String? descriptionError;
@@ -42,7 +39,6 @@ abstract class _SaveExpenseController with Store {
   @observable
   bool paid = false;
 
-  @action
   setEditingId(value) => editingId = value;
 
   @action
@@ -61,9 +57,9 @@ abstract class _SaveExpenseController with Store {
     }
   }
 
-  void editExpense(String? id) async {
+  void editExpense(int? id) async {
     if (id != null) {
-      // loading ?
+      // todo loading ?
       setEditingId(id);
       ExpenseModel? expenseModel = await repository.findById(id);
       if (expenseModel != null) {
@@ -77,12 +73,12 @@ abstract class _SaveExpenseController with Store {
 
   void saveExpense() {
     validateForm();
-    var hasError =
+    final hasError =
         [descriptionError, amountError].any((error) => error != null);
 
     if (!hasError) {
       final expense = ExpenseModel(
-        id: editingId ?? DomainUtils.nextId(),
+        id: editingId,
         description: descriptionTextController.text.trim(),
         paymentDate: date,
         amount: valueTextController.text.parseCurrency(),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:intl/intl.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
+import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 import '../model/resume_model.dart';
 
 class ExpensesResumeBoard extends StatefulWidget {
@@ -106,12 +106,29 @@ class _ExpensesResumeBoardState extends State<ExpensesResumeBoard>
                                     ? MyselffTheme.colorPrimary
                                     : Colors.black54),
                           ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Ainda falta',
+                            style: TextStyle(color: _progressScale() == 1
+                                ? MyselffTheme.colorPrimary.withAlpha(100)
+                                : MyselffTheme.errorColor.withAlpha(100)),
+                          ),
+                          Text(
+                            'R\$ ${widget.resume.totalUnpaid.formatCurrency()}',
+                            style: TextStyle(
+                                fontWeight: _progressScale() == 1
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: _progressScale() == 1
+                                    ? MyselffTheme.colorPrimary.withAlpha(120)
+                                    : MyselffTheme.errorColor.withAlpha(120)),
+                          ),
                         ],
                       ),
                     ],
                   ),
                   const SizedBox(height: 15),
-                  Text(DateFormat.yMMMM().format(widget.resume.currentDate),
+                  Text(widget.resume.currentDate.formatYearMonth(),
                       style: const TextStyle(fontSize: 16)),
                 ],
               )

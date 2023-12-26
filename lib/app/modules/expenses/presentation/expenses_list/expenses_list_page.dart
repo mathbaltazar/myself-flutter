@@ -86,10 +86,10 @@ class ExpensesListPage extends StatelessWidget {
       builder: (_) => ExpenseItemDetails(
         expense: expense,
         onEdit: () {
-          controller.editExpense(expense.id);
+          controller.editExpense(expense.id!);
         },
         onDelete: () async {
-          final deleted = await _showDeleteConfirmation(context, expense.id);
+          final deleted = await _showDeleteConfirmation(context, expense.id!);
           if (deleted == true) {
             Modular.to.pop();
           }
@@ -103,7 +103,7 @@ class ExpensesListPage extends StatelessWidget {
   }
 
   Future<dynamic> _showDeleteConfirmation(
-      BuildContext context, String expenseId) {
+      BuildContext context, int expenseId) {
     return showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -115,7 +115,7 @@ class ExpensesListPage extends StatelessWidget {
           'Excluir a despesa ?',
           textAlign: TextAlign.center,
         ),
-        insetPadding: EdgeInsets.all(16),
+        insetPadding: const EdgeInsets.all(16),
         actions: [
           TextButton(
             onPressed: () {

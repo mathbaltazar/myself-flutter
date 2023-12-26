@@ -1,26 +1,23 @@
-extension DateTimeParser on String {
-  DateTime parseFormatted({bool database = false}) {
-    var day = database ? int.parse(substring(8, 10)) : int.parse(substring(0, 2));
-    var month = database ? int.parse(substring(5, 7)) : int.parse(substring(3, 5));
-    var year = database ? int.parse(substring(0, 4)) : int.parse(substring(6, 10));
+import 'package:intl/intl.dart';
 
-    return DateTime(year, month, day);
-  }
+String _pattern(isDatabase) => isDatabase ? 'yyyy-MM-dd' : 'dd/MM/yyyy';
+String get _dateTimePattern => 'yyyy-MM-dd HH:mm:ss';
+
+extension DateTimeParser on String {
+  DateTime parseFormatted({bool database = false}) =>
+      DateFormat(_pattern(database)).parse(this);
+
+  DateTime parseDateTime() => DateFormat(_dateTimePattern).parse(this);
 }
 
 extension FormatDate on DateTime {
-  String format({bool database = false}) {
-    String formatted = '';
-    if (database) {
-      formatted += '$year';
-      formatted += '-${month.toString().padLeft(2, '0')}';
-      formatted += '-${day.toString().padLeft(2, '0')}';
-    } else {
-      formatted += day.toString().padLeft(2, '0');
-      formatted += '/${month.toString().padLeft(2, '0')}';
-      formatted += '/$year';
-    }
+  String format({bool database = false}) =>
+      DateFormat(_pattern(database)).format(this);
 
-    return formatted;
+  String formatYearMonth() {
+    final formatted = DateFormat('MMMM yyyy', 'pt_BR').format(this);
+    return formatted.substring(0, 1).toUpperCase() + formatted.substring(1);
   }
+
+  String formatDateTime() => DateFormat(_dateTimePattern).format(this);
 }

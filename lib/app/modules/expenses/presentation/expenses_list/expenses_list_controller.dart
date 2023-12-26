@@ -40,7 +40,7 @@ abstract class _ExpensesListController with Store {
     loadExpenses(date);
   }
 
-  void editExpense(String id) async {
+  void editExpense(int id) async {
     dynamic persisted = await Modular.to
         .popAndPushNamed(AppRoutes.saveExpense, arguments: {'expense_id': id});
     if (persisted == true) {
@@ -48,7 +48,7 @@ abstract class _ExpensesListController with Store {
     }
   }
 
-  void deleteExpense(String id) async {
+  void deleteExpense(int id) async {
     repository.deleteById(id);
     loadExpenses(resumeModel.currentDate);
   }
@@ -81,6 +81,7 @@ abstract class _ExpensesListController with Store {
       currentDate: currentDate,
       totalExpenses: totalExpenses,
       totalPaid: totalPaid,
+      totalUnpaid: totalExpenses - totalPaid,
     ));
     expenses.clear();
     expenses.addAll(loadedExpenses);
