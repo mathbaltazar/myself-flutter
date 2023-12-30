@@ -9,29 +9,6 @@ part of 'save_expense_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SaveExpenseController on _SaveExpenseController, Store {
-  Computed<bool>? _$editingComputed;
-
-  @override
-  bool get isEdit => (_$editingComputed ??= Computed<bool>(() => super.isEdit,
-          name: '_SaveExpenseController.editing'))
-      .value;
-
-  late final _$editingIdAtom =
-      Atom(name: '_SaveExpenseController.editingId', context: context);
-
-  @override
-  int? get editingId {
-    _$editingIdAtom.reportRead();
-    return super.editingId;
-  }
-
-  @override
-  set editingId(int? value) {
-    _$editingIdAtom.reportWrite(value, super.editingId, () {
-      super.editingId = value;
-    });
-  }
-
   late final _$descriptionErrorAtom =
       Atom(name: '_SaveExpenseController.descriptionError', context: context);
 
@@ -80,19 +57,34 @@ mixin _$SaveExpenseController on _SaveExpenseController, Store {
     });
   }
 
-  late final _$_SaveExpenseControllerActionController =
-      ActionController(name: '_SaveExpenseController', context: context);
+  late final _$paymentMethodsAtom =
+      Atom(name: '_SaveExpenseController.paymentMethods', context: context);
 
   @override
-  dynamic setEditingId(dynamic value) {
-    final _$actionInfo = _$_SaveExpenseControllerActionController.startAction(
-        name: '_SaveExpenseController.setEditingId');
-    try {
-      return super.setEditingId(value);
-    } finally {
-      _$_SaveExpenseControllerActionController.endAction(_$actionInfo);
-    }
+  List<PaymentMethodModel> get paymentMethods {
+    _$paymentMethodsAtom.reportRead();
+    return super.paymentMethods;
   }
+
+  @override
+  set paymentMethods(List<PaymentMethodModel> value) {
+    _$paymentMethodsAtom.reportWrite(value, super.paymentMethods, () {
+      super.paymentMethods = value;
+    });
+  }
+
+  late final _$_loadPaymentMethodsAsyncAction = AsyncAction(
+      '_SaveExpenseController._loadPaymentMethods',
+      context: context);
+
+  @override
+  Future _loadPaymentMethods() {
+    return _$_loadPaymentMethodsAsyncAction
+        .run(() => super._loadPaymentMethods());
+  }
+
+  late final _$_SaveExpenseControllerActionController =
+      ActionController(name: '_SaveExpenseController', context: context);
 
   @override
   dynamic setDescriptionError(String? value) {
@@ -130,11 +122,10 @@ mixin _$SaveExpenseController on _SaveExpenseController, Store {
   @override
   String toString() {
     return '''
-editingId: ${editingId},
 descriptionError: ${descriptionError},
 amountError: ${amountError},
 paid: ${paid},
-editing: ${isEdit}
+paymentMethods: ${paymentMethods}
     ''';
   }
 }

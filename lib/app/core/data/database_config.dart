@@ -11,28 +11,38 @@ class DatabaseConfig {
   static Future<Database> getInstance() async {
     final database = await openDatabase(
       join(await getDatabasesPath(), 'myselff.db'),
-      onCreate: (db, version) async {
-        var batch = db.batch();
-        _executeCreateDDL(batch);
-        await batch.commit();
-      },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        print("UPGRADE EXECUTED !!!!!!!");
-      },
+      onCreate: _executeCreateDDL,
+      onUpgrade: _executeMigrations,
       version: 1,
     );
     return database;
   }
 
-  static void _executeCreateDDL(Batch batch) {
+  static void _executeCreateDDL(Database db, version) {
+    final batch = db.batch();
+    batch.execute('''PRAGMA foreign_keys = ON''');
+    batch.execute('''
+      CREATE TABLE ${DatabaseTables.paymentMethod} (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT
+      )''');
+
     batch.execute('''
       CREATE TABLE ${DatabaseTables.expense} (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
-          paymentDate TEXT,
+          payment_date TEXT,
           description TEXT,
           amount REAL,
-          paid NUMERIC
+          paid NUMERIC,
+          payment_method_id INTEGER,
+          FOREIGN KEY (payment_method_id) REFERENCES ${DatabaseTables.paymentMethod}(id) ON DELETE SET NULL
       )''');
+
+    batch.commit();
   }
 
+  static _executeMigrations(Database db, int oldVersion, int newVersion) async {
+    final batch = db.batch();
+    batch.commit(continueOnError: false);
+  }
 }

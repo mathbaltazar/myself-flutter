@@ -7,6 +7,7 @@ class ExpenseModel {
   double amount;
   String description;
   DateTime paymentDate;
+  int? paymentMethodId;
 
   ExpenseModel({
     this.id,
@@ -14,6 +15,7 @@ class ExpenseModel {
     required this.description,
     required this.amount,
     required this.paid,
+    this.paymentMethodId,
   });
 
   Map<String, Object?> toMap() {
@@ -22,17 +24,19 @@ class ExpenseModel {
       'paid' : paid,
       'amount' : amount,
       'description' : description,
-      'paymentDate' : paymentDate.format(database: true),
+      'payment_date' : paymentDate.format(database: true),
+      'payment_method_id' : paymentMethodId,
     };
   }
 
   static ExpenseModel fromMap(Map<String, Object?> map) {
     return ExpenseModel(
       id: map['id'] as int,
-      paymentDate: map['paymentDate'].toString().parseFormatted(database: true),
+      paymentDate: map['payment_date'].toString().parseFormatted(database: true),
       description: map['description'].toString(),
       amount: map['amount']!.parseDouble(),
       paid: map['paid'].parseBoolean(),
+      paymentMethodId: map['payment_method_id'] as int?,
     );
   }
 }
