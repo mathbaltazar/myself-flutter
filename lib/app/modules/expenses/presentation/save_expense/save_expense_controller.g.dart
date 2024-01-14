@@ -73,6 +73,23 @@ mixin _$SaveExpenseController on _SaveExpenseController, Store {
     });
   }
 
+  late final _$paymentMethodSelectedAtom = Atom(
+      name: '_SaveExpenseController.paymentMethodSelected', context: context);
+
+  @override
+  PaymentMethodModel? get paymentMethodSelected {
+    _$paymentMethodSelectedAtom.reportRead();
+    return super.paymentMethodSelected;
+  }
+
+  @override
+  set paymentMethodSelected(PaymentMethodModel? value) {
+    _$paymentMethodSelectedAtom.reportWrite(value, super.paymentMethodSelected,
+        () {
+      super.paymentMethodSelected = value;
+    });
+  }
+
   late final _$_loadPaymentMethodsAsyncAction = AsyncAction(
       '_SaveExpenseController._loadPaymentMethods',
       context: context);
@@ -120,12 +137,24 @@ mixin _$SaveExpenseController on _SaveExpenseController, Store {
   }
 
   @override
+  dynamic setPaymentMethod(PaymentMethodModel? selected) {
+    final _$actionInfo = _$_SaveExpenseControllerActionController.startAction(
+        name: '_SaveExpenseController.setPaymentMethod');
+    try {
+      return super.setPaymentMethod(selected);
+    } finally {
+      _$_SaveExpenseControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 descriptionError: ${descriptionError},
 amountError: ${amountError},
 paid: ${paid},
-paymentMethods: ${paymentMethods}
+paymentMethods: ${paymentMethods},
+paymentMethodSelected: ${paymentMethodSelected}
     ''';
   }
 }

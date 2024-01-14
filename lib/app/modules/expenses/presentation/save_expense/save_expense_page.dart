@@ -20,8 +20,8 @@ class SaveExpensePage extends StatefulWidget {
 class _SaveExpensePageState extends State<SaveExpensePage> {
   @override
   void initState() {
-    super.initState();
     widget.controller.init(widget.expenseId);
+    super.initState();
   }
 
   @override
@@ -119,21 +119,24 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
                         const Icon(Icons.credit_card),
                         const SizedBox(width: 15),
                         Expanded(
-                          child: DropdownMenu<PaymentMethodModel>(
-                            initialSelection: widget.controller.paymentMethods.first,
-                            onSelected: widget.controller.setPaymentMethod,
-                            label: const Text('Método de pagamento'),
-                            expandedInsets: EdgeInsets.zero,
-                            inputDecorationTheme: const InputDecorationTheme(
-                              filled: true,
-                              fillColor: Colors.transparent,
+                          child: Observer(
+                            builder: (_) => DropdownMenu<PaymentMethodModel>(
+                              initialSelection: widget.controller.paymentMethodSelected ??
+                                  widget.controller.paymentMethods.first,
+                              onSelected: widget.controller.setPaymentMethod,
+                              label: const Text('Método de pagamento'),
+                              expandedInsets: EdgeInsets.zero,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                filled: true,
+                                fillColor: Colors.transparent,
+                              ),
+                              dropdownMenuEntries: widget.controller.paymentMethods
+                                  .map((paymentMethod) => DropdownMenuEntry(
+                                        value: paymentMethod,
+                                        label: paymentMethod.name,
+                                      ))
+                                  .toList(),
                             ),
-                            dropdownMenuEntries: widget.controller.paymentMethods
-                                .map((paymentMethod) => DropdownMenuEntry(
-                                      value: paymentMethod,
-                                      label: paymentMethod.name,
-                                    ))
-                                .toList(),
                           ),
                         ),
                       ],

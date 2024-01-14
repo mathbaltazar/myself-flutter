@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:myselff_flutter/app/core/presentation/components/confirmation_alert_dialog.dart';
 import 'package:myselff_flutter/app/core/routes/app_routes.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
@@ -102,41 +103,19 @@ class ExpensesListPage extends StatelessWidget {
     );
   }
 
-  Future<dynamic> _showDeleteConfirmation(
-      BuildContext context, int expenseId) {
-    return showDialog(
+  Future<dynamic> _showDeleteConfirmation(BuildContext context, int expenseId) {
+    return showAdaptiveDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        icon: const Icon(
-          Icons.delete_forever_rounded,
-          size: 48,
-        ),
-        content: const Text(
-          'Excluir a despesa ?',
-          textAlign: TextAlign.center,
-        ),
-        insetPadding: const EdgeInsets.all(16),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Modular.to.pop();
-            },
-            child: const Text('Cancelar'),
-          ),
-          OutlinedButton(
-            onPressed: () {
-              controller.deleteExpense(expenseId);
-              Modular.to.pop(true);
-            },
-            child: Text(
-              'Excluir',
-              style: TextStyle(
-                color: MyselffTheme.errorColor,
-              ),
-            ),
-          ),
-        ],
-      ),
+      builder: (_) => ConfirmationAlertDialog(
+          icon: const Icon(Icons.delete_rounded),
+          title: 'Excluir a despesa ?',
+          confirmLabel: 'Excluir',
+          confirmLabelTextStyle: TextStyle(color: MyselffTheme.errorColor),
+          onCancel: Modular.to.pop,
+          onConfirm: () {
+            controller.deleteExpense(expenseId);
+            Modular.to.pop(true);
+          }),
     );
   }
 }

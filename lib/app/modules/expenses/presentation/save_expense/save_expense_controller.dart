@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:myselff_flutter/app/core/routes/app_routes.dart';
 import 'package:myselff_flutter/app/core/services/message_service.dart';
+import 'package:myselff_flutter/app/core/structure/inline_functions.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
@@ -46,6 +47,7 @@ abstract class _SaveExpenseController with Store {
   @observable
   List<PaymentMethodModel> paymentMethods = [PaymentMethodModel.none()];
 
+  @observable
   PaymentMethodModel? paymentMethodSelected;
 
   setEditingId(value) => editingId = value;
@@ -66,6 +68,7 @@ abstract class _SaveExpenseController with Store {
     }
   }
 
+  @action
   setPaymentMethod(PaymentMethodModel? selected) => paymentMethodSelected = selected;
 
   init(int? editExpenseId) async {
@@ -75,14 +78,12 @@ abstract class _SaveExpenseController with Store {
 
   @action
   _loadPaymentMethods() async {
-    paymentMethods.clear();
-    paymentMethods.add(PaymentMethodModel.none());
-    paymentMethods.addAll(await paymentMethodRepository.findAll());
+    paymentMethods = await paymentMethodRepository.findAll();
+    paymentMethods.insert(0, PaymentMethodModel.none());
   }
 
   editExpense(int? id) async {
     if (id != null) {
-      // todo loading ?
       setEditingId(id);
       ExpenseModel? expenseModel = await repository.findById(id);
       if (expenseModel != null) {
@@ -90,17 +91,21 @@ abstract class _SaveExpenseController with Store {
         valueTextController.text = expenseModel.amount.formatCurrency();
         dateTimeTextController.text = expenseModel.paymentDate.format();
         paid = expenseModel.paid;
-        if (expenseModel.paymentMethodId != null) {
-          paymentMethodSelected = await paymentMethodRepository
-              .findById(expenseModel.paymentMethodId!);
-        }
+
+        setPaymentMethod(paymentMethods
+            .where((element) => element.id == expenseModel.paymentMethodId)
+            .firstOrNull);
       }
     }
   }
 
-  void newPaymentMethod() async {
+  newPaymentMethod() async {
     await Modular.to.pushNamed(AppRoutes.paymentMethods);
     await _loadPaymentMethods();
+
+    setPaymentMethod(paymentMethods
+        .where((element) => element.id == paymentMethodSelected?.id)
+        .firstOrNull);
   }
 
   void saveExpense() {

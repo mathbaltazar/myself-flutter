@@ -128,7 +128,7 @@ class _ExpensesResumeBoardState extends State<ExpensesResumeBoard>
                     ],
                   ),
                   const SizedBox(height: 15),
-                  Text(widget.resume.currentDate.formatYearMonth(),
+                  Text(widget.resume.currentDate.formatYearMonthExtended(),
                       style: const TextStyle(fontSize: 16)),
                 ],
               )
