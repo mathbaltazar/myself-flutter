@@ -4,3 +4,8 @@ extension InlineAlso<T> on T {
     return this;
   }
 }
+extension InlineLet<T, R> on T {
+  R let(R Function(T) command) {
+    return command(this);
+  }
+}
