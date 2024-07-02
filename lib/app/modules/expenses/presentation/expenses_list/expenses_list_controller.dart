@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:myselff_flutter/app/core/routes/app_routes.dart';
 
@@ -42,7 +44,7 @@ abstract class _ExpensesListController with Store {
 
   void editExpense(int id) async {
     dynamic persisted = await Modular.to
-        .popAndPushNamed(AppRoutes.saveExpense, arguments: {'expense_id': id});
+        .popAndPushNamed(AppRoutes.expenseRoute + AppRoutes.saveExpense, arguments: {'expense_id': id});
     if (persisted == true) {
       loadExpenses(resumeModel.currentDate);
     }
@@ -85,5 +87,10 @@ abstract class _ExpensesListController with Store {
     ));
     expenses.clear();
     expenses.addAll(loadedExpenses);
+  }
+
+  signOut() async { // move to isolated scope (SOLID warning!!!!!!)
+    GoogleSignIn().signOut();
+    FirebaseAuth.instance.signOut();
   }
 }

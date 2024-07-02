@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:myselff_flutter/app/core/presentation/components/confirmation_alert_dialog.dart';
 import 'package:myselff_flutter/app/core/routes/app_routes.dart';
+import 'package:myselff_flutter/app/core/structure/inline_functions.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
 
@@ -21,12 +23,20 @@ class ExpensesListPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Despesas'),
+          title: _userInfoTitleWidget(),
+          actions: [
+            Visibility(
+                visible: FirebaseAuth.instance.currentUser != null,
+                child: IconButton(
+                    onPressed: controller.signOut,
+                    icon: const Icon(Icons.logout)))
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+              const Text('Despesas'),
               const SizedBox(height: 10),
               Observer(
                 builder: (_) => ExpensesResumeBoard(
@@ -72,7 +82,7 @@ class ExpensesListPage extends StatelessWidget {
             child: const Icon(Icons.add),
             onPressed: () async {
               final persisted =
-                  await Modular.to.pushNamed(AppRoutes.saveExpense);
+                  await Modular.to.pushNamed(AppRoutes.expenseRoute + AppRoutes.saveExpense);
               if (persisted == true) {
                 controller.loadExpenses(controller.resumeModel.currentDate);
               }
@@ -116,6 +126,19 @@ class ExpensesListPage extends StatelessWidget {
             controller.deleteExpense(expenseId);
             Modular.to.pop(true);
           }),
+    );
+  }
+
+  Widget _userInfoTitleWidget() {
+    final user = FirebaseAuth.instance.currentUser;
+    return Row(
+      children: [
+        CircleAvatar(
+          foregroundImage: user?.let((it) => NetworkImage(it.photoURL!)) ,
+        ),
+        const SizedBox(width: 16),
+        Text(user?.displayName ?? 'myselff'),
+      ],
     );
   }
 }

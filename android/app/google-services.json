@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "428417596792",
+    "project_id": "myselff-app",
+    "storage_bucket": "myselff-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428417596792:android:510cf5fbdf8d49ac2f9c8d",
+        "android_client_info": {
+          "package_name": "br.com.myselff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428417596792-tjlrnbbd2tfagrlpjvkdapiir7nb47v6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.myselff",
+            "certificate_hash": "76036a18900132f76d5b833bb25f6e3836457f11"
+          }
+        },
+        {
+          "client_id": "428417596792-msdlhu31iec3c30ns5ega95jplpsb2d7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADGBVujc_tRYFLC0QIAnlbZ_yHX0_itnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428417596792-msdlhu31iec3c30ns5ega95jplpsb2d7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "428417596792-l78h13244j887td2pq3cfmef6brbd8au.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterApplication"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

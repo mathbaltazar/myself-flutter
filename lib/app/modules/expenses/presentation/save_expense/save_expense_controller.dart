@@ -99,7 +99,7 @@ abstract class _SaveExpenseController with Store {
   }
 
   newPaymentMethod() async {
-    await Modular.to.pushNamed(AppRoutes.paymentMethods);
+    await Modular.to.pushNamed(AppRoutes.expenseRoute + AppRoutes.paymentMethods);
     await _loadPaymentMethods();
 
     setPaymentMethod(paymentMethods
