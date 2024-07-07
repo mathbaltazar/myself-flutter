@@ -27,12 +27,12 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.controller.isEdit ? 'Editar' : 'Despesa'),
-        ),
-        body: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.controller.isEdit ? 'Editar' : 'Despesa'),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(height: 25),
@@ -164,11 +164,11 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: widget.controller.saveExpense,
-          label: const Text('Salvar'),
-          icon: const Icon(Icons.done_rounded),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: widget.controller.saveExpense,
+        label: const Text('Salvar'),
+        icon: const Icon(Icons.done_rounded),
       ),
     );
   }
