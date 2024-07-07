@@ -1,11 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:myselff_flutter/app/core/presentation/widgets/confirmation_alert_dialog.dart';
 import 'package:myselff_flutter/app/core/routes/app_routes.dart';
+import 'package:myselff_flutter/app/core/structure/inline_functions.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
 
-import 'components/expense_item_details.dart';
+import '../../domain/model/expense_model.dart';
+import '../widgets/payment_select_dialog.dart';
+import 'components/expense_details_widget.dart';
 import 'components/expense_list_item.dart';
 import 'components/expenses_resume_board.dart';
 import 'expenses_list_controller.dart';
@@ -20,12 +24,20 @@ class ExpensesListPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Despesas'),
+          title: _userInfoTitleWidget(),
+          actions: [
+            Visibility(
+                visible: FirebaseAuth.instance.currentUser != null,
+                child: IconButton(
+                    onPressed: controller.signOut,
+                    icon: const Icon(Icons.logout)))
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+              const Text('Despesas'),
               const SizedBox(height: 10),
               Observer(
                 builder: (_) => ExpensesResumeBoard(
@@ -56,10 +68,8 @@ class ExpensesListPage extends StatelessWidget {
                           itemCount: controller.expenses.length,
                           itemBuilder: (_, index) => ExpenseListItem(
                             controller.expenses[index],
-                            onExpenseClick: () => {
-                              _showExpenseDetails(
-                                  context, controller.expenses[index])
-                            },
+                            onItemClick: () => _showExpenseDetails(
+                                  context, controller.expenses[index]),
                           ),
                         ),
                 ),
@@ -71,7 +81,7 @@ class ExpensesListPage extends StatelessWidget {
             child: const Icon(Icons.add),
             onPressed: () async {
               final persisted =
-                  await Modular.to.pushNamed(AppRoutes.saveExpense);
+                  await Modular.to.pushNamed(AppRoutes.expenseRoute + AppRoutes.saveExpense);
               if (persisted == true) {
                 controller.loadExpenses(controller.resumeModel.currentDate);
               }
@@ -80,63 +90,77 @@ class ExpensesListPage extends StatelessWidget {
     );
   }
 
-  void _showExpenseDetails(BuildContext context, ExpenseModel expense) {
-    showModalBottomSheet(
-      context: context,
-      builder: (_) => ExpenseItemDetails(
-        expense: expense,
-        onEdit: () {
-          controller.editExpense(expense.id!);
-        },
-        onDelete: () async {
-          final deleted = await _showDeleteConfirmation(context, expense.id!);
-          if (deleted == true) {
+  void _showExpenseDetails(BuildContext context, ExpenseModel expense) async {
+    var method =
+        await controller.findPaymentMethodById(expense.paymentMethodId);
+    if (context.mounted) {
+      showModalBottomSheet(
+        context: context,
+        builder: (_) => ExpenseDetailsWidget(
+          controller: controller,
+          expense: expense,
+          paymentMethod: method,
+          onEdit: () => controller.editExpense(expense.id!),
+          onDelete: () async {
+            final deleted = await _showDeleteConfirmation(context, expense.id!);
+            if (deleted == true) {
+              Modular.to.pop();
+            }
+          },
+          onMarkAsPaid: () {
+            controller.togglePaid(expense);
             Modular.to.pop();
-          }
-        },
-        onMarkAsPaid: () {
-          controller.togglePaid(expense);
-          Modular.to.pop();
-        },
-      ),
+            _showExpenseDetails(context, expense);
+          },
+          onSelectPaymentMethod: () async {
+            final selectedMethod = await _showSelectPaymentDialog(context);
+            if (selectedMethod != null) {
+              controller.definePaymentFor(selectedMethod, expense);
+              Modular.to.pop();
+              _showExpenseDetails(context, expense);
+            }
+          },
+        ),
+      );
+    }
+  }
+
+  Future<dynamic> _showDeleteConfirmation(BuildContext context, int expenseId) {
+    return showAdaptiveDialog(
+      context: context,
+      builder: (_) => ConfirmationAlertDialog(
+          icon: const Icon(Icons.delete_rounded),
+          title: 'Excluir a despesa ?',
+          confirmLabel: 'Excluir',
+          confirmLabelTextStyle: TextStyle(color: MyselffTheme.errorColor),
+          onCancel: Modular.to.pop,
+          onConfirm: () {
+            controller.deleteExpense(expenseId);
+            Modular.to.pop(true);
+          }),
     );
   }
 
-  Future<dynamic> _showDeleteConfirmation(
-      BuildContext context, int expenseId) {
-    return showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        icon: const Icon(
-          Icons.delete_forever_rounded,
-          size: 48,
+  Widget _userInfoTitleWidget() {
+    final user = FirebaseAuth.instance.currentUser;
+    return Row(
+      children: [
+        CircleAvatar(
+          foregroundImage: user?.let((it) => NetworkImage(it.photoURL!)) ,
         ),
-        content: const Text(
-          'Excluir a despesa ?',
-          textAlign: TextAlign.center,
-        ),
-        insetPadding: const EdgeInsets.all(16),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Modular.to.pop();
-            },
-            child: const Text('Cancelar'),
-          ),
-          OutlinedButton(
-            onPressed: () {
-              controller.deleteExpense(expenseId);
-              Modular.to.pop(true);
-            },
-            child: Text(
-              'Excluir',
-              style: TextStyle(
-                color: MyselffTheme.errorColor,
-              ),
-            ),
-          ),
-        ],
-      ),
+        const SizedBox(width: 16),
+        Text(user?.displayName ?? 'myselff'),
+      ],
     );
+  }
+
+  Future<dynamic> _showSelectPaymentDialog(BuildContext context) {
+    return controller.findAllPaymentMethods()
+        .then((methods) => showAdaptiveDialog(
+          context: context,
+          builder: (_) => PaymentSelectDialog(
+              paymentMethods: methods,
+              onSelect: (selected) => Modular.to.pop(selected)),
+        ));
   }
 }

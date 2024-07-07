@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyselffTheme {
+
   static const lightColorScheme = ColorScheme(
     brightness: Brightness.light,
     primary: Color(0xFF2D5DA7),
@@ -80,6 +81,9 @@ class MyselffTheme {
 
   static Color get errorColor =>
       isDarkMode() ? darkColorScheme.error : lightColorScheme.error;
+
+  static Color get colorSurfaceTint =>
+      isDarkMode() ? darkColorScheme.surfaceTint : lightColorScheme.surfaceTint;
 
   static isDarkMode() {
     var brightness =

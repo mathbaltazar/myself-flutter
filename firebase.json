@@ -1,0 +1,22 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "myselff-app",
+          "appId": "1:428417596792:android:510cf5fbdf8d49ac2f9c8d",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "myselff-app",
+          "configurations": {
+            "android": "1:428417596792:android:510cf5fbdf8d49ac2f9c8d",
+            "ios": "1:428417596792:ios:a9a6d8273719ad0b2f9c8d"
+          }
+        }
+      }
+    }
+  }
+}

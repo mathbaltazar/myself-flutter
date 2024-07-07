@@ -14,8 +14,13 @@ extension FormatDate on DateTime {
   String format({bool database = false}) =>
       DateFormat(_pattern(database)).format(this);
 
-  String formatYearMonth() {
+  String formatYearMonthExtended() {
     final formatted = DateFormat('MMMM yyyy', 'pt_BR').format(this);
+    return formatted.substring(0, 1).toUpperCase() + formatted.substring(1);
+  }
+
+  String formatYearMonth() {
+    final formatted = DateFormat('MMM/yyyy', 'pt_BR').format(this);
     return formatted.substring(0, 1).toUpperCase() + formatted.substring(1);
   }
 

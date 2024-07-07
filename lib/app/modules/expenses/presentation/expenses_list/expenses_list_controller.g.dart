@@ -56,6 +56,17 @@ mixin _$ExpensesListController on _ExpensesListController, Store {
   }
 
   @override
+  void definePaymentFor(PaymentMethodModel selected, ExpenseModel expense) {
+    final _$actionInfo = _$_ExpensesListControllerActionController.startAction(
+        name: '_ExpensesListController.definePaymentFor');
+    try {
+      return super.definePaymentFor(selected, expense);
+    } finally {
+      _$_ExpensesListControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 resumeModel: ${resumeModel},

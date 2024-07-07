@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -9,6 +10,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'app/app_module.dart';
 import 'app/app_widget.dart';
+import 'firebase_options.dart';
 
 void main() async {
   await runZonedGuarded(() async {
@@ -23,6 +25,10 @@ void main() async {
     GoogleFonts.config.allowRuntimeFetching = false;
     await initializeDateFormatting('pt_BR', null);
 
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
     runApp(
       ModularApp(
         module: AppModule(),
@@ -30,7 +36,7 @@ void main() async {
       ),
     );
   }, (error, stack) {
-    print('MYSELFF-FLUTTER error > $error');
-    print('MYSELFF-FLUTTER stack > $stack');
+    debugPrint('MYSELFF-FLUTTER error > $error');
+    debugPrint('MYSELFF-FLUTTER stack > $stack');
   });
 }

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
+import 'package:myselff_flutter/app/core/routes/app_routes.dart';
 import 'package:myselff_flutter/app/core/services/message_service.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/model/payment_method_model.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/repository/expenses_repository.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/repository/payment_method_repository.dart';
 
 part 'save_expense_controller.g.dart';
 
@@ -13,9 +16,10 @@ class SaveExpenseController = _SaveExpenseController
     with _$SaveExpenseController;
 
 abstract class _SaveExpenseController with Store {
-  _SaveExpenseController(this.repository);
+  _SaveExpenseController(this.repository, this.paymentMethodRepository);
 
   final ExpensesRepository repository;
+  final PaymentMethodRepository paymentMethodRepository;
 
   final TextEditingController descriptionTextController =
       TextEditingController();
@@ -39,6 +43,12 @@ abstract class _SaveExpenseController with Store {
   @observable
   bool paid = false;
 
+  @observable
+  List<PaymentMethodModel> paymentMethods = [PaymentMethodModel.none()];
+
+  @observable
+  PaymentMethodModel? paymentMethodSelected;
+
   setEditingId(value) => editingId = value;
 
   @action
@@ -57,9 +67,22 @@ abstract class _SaveExpenseController with Store {
     }
   }
 
-  void editExpense(int? id) async {
+  @action
+  setPaymentMethod(PaymentMethodModel? selected) => paymentMethodSelected = selected;
+
+  init(int? editExpenseId) async {
+    await _loadPaymentMethods();
+    await editExpense(editExpenseId);
+  }
+
+  @action
+  _loadPaymentMethods() async {
+    paymentMethods = await paymentMethodRepository.findAll();
+    paymentMethods.insert(0, PaymentMethodModel.none());
+  }
+
+  editExpense(int? id) async {
     if (id != null) {
-      // todo loading ?
       setEditingId(id);
       ExpenseModel? expenseModel = await repository.findById(id);
       if (expenseModel != null) {
@@ -67,8 +90,21 @@ abstract class _SaveExpenseController with Store {
         valueTextController.text = expenseModel.amount.formatCurrency();
         dateTimeTextController.text = expenseModel.paymentDate.format();
         paid = expenseModel.paid;
+
+        setPaymentMethod(paymentMethods
+            .where((element) => element.id == expenseModel.paymentMethodId)
+            .firstOrNull);
       }
     }
+  }
+
+  managePaymentMethod() async {
+    await Modular.to.pushNamed(AppRoutes.expenseRoute + AppRoutes.paymentMethods);
+    await _loadPaymentMethods();
+
+    setPaymentMethod(paymentMethods
+        .where((element) => element.id == paymentMethodSelected?.id)
+        .firstOrNull);
   }
 
   void saveExpense() {
@@ -83,6 +119,7 @@ abstract class _SaveExpenseController with Store {
         paymentDate: date,
         amount: valueTextController.text.parseCurrency(),
         paid: paid,
+        paymentMethodId: paid ? paymentMethodSelected?.id : null
       );
 
       repository.save(expense);

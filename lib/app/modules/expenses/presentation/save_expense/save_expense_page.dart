@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:myselff_flutter/app/core/utils/mask_util.dart';
+import 'package:myselff_flutter/app/core/presentation/widgets/widgets/link_button.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
+import 'package:myselff_flutter/app/core/utils/mask_util.dart';
 
+import '../../domain/model/payment_method_model.dart';
 import 'save_expense_controller.dart';
 
 class SaveExpensePage extends StatefulWidget {
@@ -19,8 +21,8 @@ class SaveExpensePage extends StatefulWidget {
 class _SaveExpensePageState extends State<SaveExpensePage> {
   @override
   void initState() {
+    widget.controller.init(widget.expenseId);
     super.initState();
-    widget.controller.editExpense(widget.expenseId);
   }
 
   @override
@@ -28,10 +30,7 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Observer(
-            builder: (_) =>
-                Text(widget.controller.isEdit ? 'Editar' : 'Despesa'),
-          ),
+          title: Text(widget.controller.isEdit ? 'Editar' : 'Despesa'),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -115,6 +114,50 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 15),
+                    Row(
+                      children: [
+                        const Icon(Icons.credit_card),
+                        const SizedBox(width: 15),
+                        Expanded(
+                          child: Observer(
+                            builder: (_) => DropdownMenu<PaymentMethodModel>(
+                              enabled: widget.controller.paid,
+                              initialSelection: widget.controller.paymentMethodSelected ??
+                                  widget.controller.paymentMethods.first,
+                              onSelected: widget.controller.setPaymentMethod,
+                              label: const Text('Método de pagamento'),
+                              textStyle: TextStyle(
+                                color: widget.controller.paid ? null : Colors.black26
+                              ),
+                              expandedInsets: EdgeInsets.zero,
+                              inputDecorationTheme: const InputDecorationTheme(
+                                filled: true,
+                                fillColor: Colors.transparent,
+                              ),
+                              dropdownMenuEntries: widget.controller.paymentMethods
+                                  .map((paymentMethod) => DropdownMenuEntry(
+                                        value: paymentMethod,
+                                        label: paymentMethod.name,
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Observer(
+                        builder: (_) => LinkButton(
+                          onClick: widget.controller.managePaymentMethod,
+                          label: 'gerenciar métodos de pagamento',
+                          enabled: widget.controller.paid,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
                   ],
                 ),
               ),
