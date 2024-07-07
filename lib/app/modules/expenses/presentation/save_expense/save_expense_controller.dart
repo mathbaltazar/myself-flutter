@@ -89,6 +89,7 @@ abstract class _SaveExpenseController with Store {
         descriptionTextController.text = expenseModel.description;
         valueTextController.text = expenseModel.amount.formatCurrency();
         dateTimeTextController.text = expenseModel.paymentDate.format();
+        setDate(expenseModel.paymentDate);
         paid = expenseModel.paid;
 
         setPaymentMethod(paymentMethods
