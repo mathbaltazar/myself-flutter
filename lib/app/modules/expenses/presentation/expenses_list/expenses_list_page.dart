@@ -2,13 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:myselff_flutter/app/core/presentation/components/confirmation_alert_dialog.dart';
+import 'package:myselff_flutter/app/core/presentation/widgets/confirmation_alert_dialog.dart';
 import 'package:myselff_flutter/app/core/routes/app_routes.dart';
 import 'package:myselff_flutter/app/core/structure/inline_functions.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
 
-import 'components/expense_item_details.dart';
+import '../../domain/model/expense_model.dart';
+import '../widgets/payment_select_dialog.dart';
+import 'components/expense_details_widget.dart';
 import 'components/expense_list_item.dart';
 import 'components/expenses_resume_board.dart';
 import 'expenses_list_controller.dart';
@@ -67,10 +68,8 @@ class ExpensesListPage extends StatelessWidget {
                           itemCount: controller.expenses.length,
                           itemBuilder: (_, index) => ExpenseListItem(
                             controller.expenses[index],
-                            onExpenseClick: () => {
-                              _showExpenseDetails(
-                                  context, controller.expenses[index])
-                            },
+                            onItemClick: () => _showExpenseDetails(
+                                  context, controller.expenses[index]),
                           ),
                         ),
                 ),
@@ -91,26 +90,39 @@ class ExpensesListPage extends StatelessWidget {
     );
   }
 
-  void _showExpenseDetails(BuildContext context, ExpenseModel expense) {
-    showModalBottomSheet(
-      context: context,
-      builder: (_) => ExpenseItemDetails(
-        expense: expense,
-        onEdit: () {
-          controller.editExpense(expense.id!);
-        },
-        onDelete: () async {
-          final deleted = await _showDeleteConfirmation(context, expense.id!);
-          if (deleted == true) {
+  void _showExpenseDetails(BuildContext context, ExpenseModel expense) async {
+    var method =
+        await controller.findPaymentMethodById(expense.paymentMethodId);
+    if (context.mounted) {
+      showModalBottomSheet(
+        context: context,
+        builder: (_) => ExpenseDetailsWidget(
+          controller: controller,
+          expense: expense,
+          paymentMethod: method,
+          onEdit: () => controller.editExpense(expense.id!),
+          onDelete: () async {
+            final deleted = await _showDeleteConfirmation(context, expense.id!);
+            if (deleted == true) {
+              Modular.to.pop();
+            }
+          },
+          onMarkAsPaid: () {
+            controller.togglePaid(expense);
             Modular.to.pop();
-          }
-        },
-        onMarkAsPaid: () {
-          controller.togglePaid(expense);
-          Modular.to.pop();
-        },
-      ),
-    );
+            _showExpenseDetails(context, expense);
+          },
+          onSelectPaymentMethod: () async {
+            final selectedMethod = await _showSelectPaymentDialog(context);
+            if (selectedMethod != null) {
+              controller.definePaymentFor(selectedMethod, expense);
+              Modular.to.pop();
+              _showExpenseDetails(context, expense);
+            }
+          },
+        ),
+      );
+    }
   }
 
   Future<dynamic> _showDeleteConfirmation(BuildContext context, int expenseId) {
@@ -140,5 +152,15 @@ class ExpensesListPage extends StatelessWidget {
         Text(user?.displayName ?? 'myselff'),
       ],
     );
+  }
+
+  Future<dynamic> _showSelectPaymentDialog(BuildContext context) {
+    return controller.findAllPaymentMethods()
+        .then((methods) => showAdaptiveDialog(
+          context: context,
+          builder: (_) => PaymentSelectDialog(
+              paymentMethods: methods,
+              onSelect: (selected) => Modular.to.pop(selected)),
+        ));
   }
 }

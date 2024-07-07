@@ -8,11 +8,11 @@ import '../../../domain/model/expense_model.dart';
 class ExpenseListItem extends StatelessWidget {
   const ExpenseListItem(
     this.expense, {
-    required this.onExpenseClick,
+    required this.onItemClick,
     super.key,
   });
 
-  final void Function() onExpenseClick;
+  final void Function() onItemClick;
   final ExpenseModel expense;
 
   @override
@@ -20,7 +20,7 @@ class ExpenseListItem extends StatelessWidget {
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: onExpenseClick,
+        onTap: onItemClick,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(

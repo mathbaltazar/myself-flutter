@@ -19,7 +19,7 @@ class ExpenseModule extends Module {
         Bind<PaymentMethodRepository>((i) => PaymentMethodRepositoryImpl()),
         Bind.factory((i) => SaveExpenseController(
             i<ExpensesRepository>(), i<PaymentMethodRepository>())),
-        Bind.factory((i) => ExpensesListController(i<ExpensesRepository>())),
+        Bind.factory((i) => ExpensesListController(i<ExpensesRepository>(),i<PaymentMethodRepository>())),
         Bind.factory((i) => PaymentMethodsController(i<PaymentMethodRepository>())),
       ];
 

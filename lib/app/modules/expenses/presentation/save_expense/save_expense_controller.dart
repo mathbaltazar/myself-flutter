@@ -98,7 +98,7 @@ abstract class _SaveExpenseController with Store {
     }
   }
 
-  newPaymentMethod() async {
+  managePaymentMethod() async {
     await Modular.to.pushNamed(AppRoutes.expenseRoute + AppRoutes.paymentMethods);
     await _loadPaymentMethods();
 
@@ -119,7 +119,7 @@ abstract class _SaveExpenseController with Store {
         paymentDate: date,
         amount: valueTextController.text.parseCurrency(),
         paid: paid,
-        paymentMethodId: paymentMethodSelected?.id
+        paymentMethodId: paid ? paymentMethodSelected?.id : null
       );
 
       repository.save(expense);

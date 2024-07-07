@@ -3,7 +3,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:myselff_flutter/app/core/routes/app_routes.dart';
-
+import 'package:myselff_flutter/app/core/structure/inline_functions.dart';
+import '../../domain/model/payment_method_model.dart';
+import '../../domain/repository/payment_method_repository.dart';
 import '../../domain/model/expense_model.dart';
 import '../../domain/repository/expenses_repository.dart';
 import 'model/resume_model.dart';
@@ -14,11 +16,14 @@ class ExpensesListController = _ExpensesListController
     with _$ExpensesListController;
 
 abstract class _ExpensesListController with Store {
-  _ExpensesListController(this.repository) {
+
+  _ExpensesListController(this.expenseRepository,
+      this.paymentMethodRepository) {
     loadExpenses(resumeModel.currentDate);
   }
 
-  final ExpensesRepository repository;
+  final PaymentMethodRepository paymentMethodRepository;
+  final ExpensesRepository expenseRepository;
 
   @observable
   ResumeModel resumeModel = ResumeModel.instance();
@@ -38,35 +43,39 @@ abstract class _ExpensesListController with Store {
 
   void nextMonth() {
     var date =
-        resumeModel.currentDate.add(const Duration(days: 31)).copyWith(day: 1);
+    resumeModel.currentDate.add(const Duration(days: 31)).copyWith(day: 1);
     loadExpenses(date);
   }
 
   void editExpense(int id) async {
     dynamic persisted = await Modular.to
-        .popAndPushNamed(AppRoutes.expenseRoute + AppRoutes.saveExpense, arguments: {'expense_id': id});
+        .popAndPushNamed(AppRoutes.expenseRoute + AppRoutes.saveExpense,
+        arguments: {'expense_id': id});
     if (persisted == true) {
       loadExpenses(resumeModel.currentDate);
     }
   }
 
   void deleteExpense(int id) async {
-    repository.deleteById(id);
+    expenseRepository.deleteById(id);
     loadExpenses(resumeModel.currentDate);
   }
 
   void togglePaid(ExpenseModel expense) async {
     expense.paid = !expense.paid;
-    repository.save(expense);
+    if (!expense.paid) {
+      expense.paymentMethodId = null;
+    }
+    expenseRepository.save(expense);
     loadExpenses(resumeModel.currentDate);
   }
 
   void loadExpenses(DateTime currentDate) async {
-    List<ExpenseModel> loadedExpenses = await repository.findAll();
+    List<ExpenseModel> loadedExpenses = await expenseRepository.findAll();
     loadedExpenses = loadedExpenses
         .where((expense) =>
-            expense.paymentDate.year == currentDate.year &&
-            expense.paymentDate.month == currentDate.month)
+    expense.paymentDate.year == currentDate.year &&
+        expense.paymentDate.month == currentDate.month)
         .toList();
 
     double totalExpenses = 0;
@@ -89,8 +98,23 @@ abstract class _ExpensesListController with Store {
     expenses.addAll(loadedExpenses);
   }
 
-  signOut() async { // move to isolated scope (SOLID warning!!!!!!)
+  signOut() async {
+    // move to isolated scope (SOLID warning!!!!!!)
     GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
+  }
+
+  Future<List<PaymentMethodModel>> findAllPaymentMethods() =>
+      paymentMethodRepository.findAll();
+
+  Future<PaymentMethodModel?> findPaymentMethodById(int? id) async =>
+      id?.let((it) => paymentMethodRepository.findById(it));
+
+  @action
+  void definePaymentFor(PaymentMethodModel selected,
+      ExpenseModel expense) {
+    expense.paymentMethodId = selected.id;
+    expenseRepository.update(expense);
+    loadExpenses(resumeModel.currentDate);
   }
 }

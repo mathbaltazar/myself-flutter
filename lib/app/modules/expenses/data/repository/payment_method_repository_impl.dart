@@ -1,7 +1,10 @@
+import 'package:intl/intl.dart';
 import 'package:myselff_flutter/app/core/data/database_structure.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/model/payment_method_model.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/repository/payment_method_repository.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../../domain/model/detailed_payment_method_model.dart';
+import '../../domain/model/payment_method_model.dart';
+import '../../domain/repository/payment_method_repository.dart';
 
 class PaymentMethodRepositoryImpl extends PaymentMethodRepository {
   @override
@@ -60,12 +63,38 @@ class PaymentMethodRepositoryImpl extends PaymentMethodRepository {
   }
 
   @override
+  Future<List<DetailedPaymentMethodModel>> findAllDetailed() async {
+    final db = await getDatabase();
+    String nowYearMonth = DateFormat('yyyy-MM').format(DateTime.now());
+    final query = '''
+        SELECT p.*,
+         COUNT(e.id) AS expenseCount, 
+         COUNT(e.id) FILTER (WHERE e.payment_date LIKE '$nowYearMonth%') AS currentMonthCount
+         FROM ${DatabaseTables.paymentMethod} p
+            LEFT JOIN ${DatabaseTables.expense} e ON e.payment_method_id = p.id
+      GROUP BY p.id
+    ''';
+
+    List<Map<String, Object?>> records = await db.rawQuery(query);
+
+    return records.map((e) {
+      return DetailedPaymentMethodModel(
+        paymentMethod: PaymentMethodModel.fromMap(e),
+        currentMonthExpenseCount: e['currentMonthCount'] as int? ?? 0,
+        expenseCount: e['expenseCount'] as int? ?? 0,
+      );
+    }).toList();
+  }
+
+  @override
   Future<bool> existsByName(String name) async {
     final db = await getDatabase();
-    List<Map<String, Object?>> records = await db.query(
-        DatabaseTables.paymentMethod,
-        where: 'name = ?',
-        whereArgs: [name]);
-    return records.isNotEmpty && records.length == 1;
+
+    final result = await db.query(
+      DatabaseTables.paymentMethod,
+      where: 'name like ?',
+      whereArgs: [name],
+    );
+    return result.firstOrNull != null;
   }
 }

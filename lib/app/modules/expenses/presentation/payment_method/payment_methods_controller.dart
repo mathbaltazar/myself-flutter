@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
-import 'package:myselff_flutter/app/modules/expenses/presentation/payment_method/model/detailed_payment_method_model.dart';
 
+import '../../domain/model/detailed_payment_method_model.dart';
 import '../../domain/model/payment_method_model.dart';
 import '../../domain/repository/payment_method_repository.dart';
 
@@ -16,7 +16,7 @@ abstract class _PaymentMethodsController with Store {
   final PaymentMethodRepository repository;
 
   @observable
-  ObservableList<PaymentMethodModel> paymentMethodsList = ObservableList();
+  ObservableList<DetailedPaymentMethodModel> paymentMethodsList = ObservableList();
 
   final TextEditingController inputPaymentTextController =
       TextEditingController();
@@ -31,38 +31,14 @@ abstract class _PaymentMethodsController with Store {
   bool isEdit = false;
 
   @observable
-  DetailedPaymentMethodModel? detailedPaymentMethodModel;
-
-  @observable
   PaymentMethodModel? editingPaymentMethod;
 
   setInputPaymentMethodError(value) => inputPaymentMethodError = value;
 
-  @action
-  setSelectedPaymentMethod(PaymentMethodModel? value) {
-    if (value != null) {
-      var detailed = DetailedPaymentMethodModel();
-      detailed.paymentMethod = value;
-      // todo
-      //detailed.currentMonthExpenseCount = expenseRepository.countByPaymentMethodByYearMonth(value, DateTime.now());
-      //detailed.currentMonthExpenseCount = expenseRepository.countByPaymentMethod(value);
-      detailedPaymentMethodModel = detailed;
-    } else {
-      detailedPaymentMethodModel = null;
-    }
-  }
-
   loadPaymentMethods() async {
-    var paymentMethods = await repository.findAll();
+    var paymentMethods = await repository.findAllDetailed();
     paymentMethodsList.clear();
     paymentMethodsList.addAll(paymentMethods);
-
-    if (detailedPaymentMethodModel != null) {
-      PaymentMethodModel? selected = paymentMethods.where((element) =>
-          element.id == detailedPaymentMethodModel!.paymentMethod!.id).firstOrNull;
-
-      setSelectedPaymentMethod(selected);
-    }
   }
 
   @action
@@ -84,35 +60,50 @@ abstract class _PaymentMethodsController with Store {
   void cancelSave() {
     isAdd = false;
     isEdit = false;
+    inputPaymentMethodError = null;
     editingPaymentMethod = null;
   }
 
   void savePaymentMethod() {
-    if (inputPaymentTextController.text.isEmpty) {
-      setInputPaymentMethodError('Campo vazio');
-    } else if (isAdd) {
-      final model = PaymentMethodModel(
-        name: inputPaymentTextController.text.trim(),
-      );
+    _validatePaymentMethodInput()
+        .then((validated) {
+      if (validated) {
+        if (isAdd) {
+          final model = PaymentMethodModel(
+            name: inputPaymentTextController.text.trim(),
+          );
 
-      repository.save(model);
+          repository.save(model);
 
-      cancelSave();
-      loadPaymentMethods();
-    } else if (isEdit) {
-      if (editingPaymentMethod != null) {
-        editingPaymentMethod!.name = inputPaymentTextController.text.trim();
+          cancelSave();
+          loadPaymentMethods();
+        } else if (isEdit) {
+          if (editingPaymentMethod != null) {
+            editingPaymentMethod!.name = inputPaymentTextController.text.trim();
 
-        repository.save(editingPaymentMethod!);
+            repository.save(editingPaymentMethod!);
 
-        cancelSave();
-        loadPaymentMethods();
+            cancelSave();
+            loadPaymentMethods();
+          }
+        }
       }
-    }
+    });
   }
 
   deletePaymentMethod(PaymentMethodModel paymentMethod) async {
     repository.deleteById(paymentMethod.id!);
     loadPaymentMethods();
+  }
+
+  Future<bool> _validatePaymentMethodInput() async {
+    if (inputPaymentTextController.text.isEmpty) {
+      setInputPaymentMethodError('Campo vazio');
+    } else if (await repository.existsByName(inputPaymentTextController.text)) {
+      setInputPaymentMethodError('Este método já existe');
+    } else {
+      setInputPaymentMethodError(null);
+    }
+    return inputPaymentMethodError == null;
   }
 }

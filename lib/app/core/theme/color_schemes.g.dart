@@ -82,6 +82,9 @@ class MyselffTheme {
   static Color get errorColor =>
       isDarkMode() ? darkColorScheme.error : lightColorScheme.error;
 
+  static Color get colorSurfaceTint =>
+      isDarkMode() ? darkColorScheme.surfaceTint : lightColorScheme.surfaceTint;
+
   static isDarkMode() {
     var brightness =
         WidgetsBinding.instance.platformDispatcher.platformBrightness;
