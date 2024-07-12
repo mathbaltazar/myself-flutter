@@ -5,8 +5,8 @@ import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dar
 import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 import 'package:myselff_flutter/app/modules/expenses/presentation/expenses_list/expenses_list_controller.dart';
 
-import '../../../domain/model/expense_model.dart';
-import '../../../domain/model/payment_method_model.dart';
+import '../../../domain/entity/expense_entity.dart';
+import '../../../domain/entity/payment_type_entity.dart';
 
 class ExpenseDetailsWidget extends StatelessWidget {
   const ExpenseDetailsWidget({
@@ -21,8 +21,8 @@ class ExpenseDetailsWidget extends StatelessWidget {
   });
 
   final ExpensesListController controller;
-  final ExpenseModel expense;
-  final PaymentMethodModel? paymentMethod;
+  final ExpenseEntity expense;
+  final PaymentTypeEntity? paymentMethod;
   final void Function() onEdit;
   final void Function() onDelete;
   final void Function() onMarkAsPaid;

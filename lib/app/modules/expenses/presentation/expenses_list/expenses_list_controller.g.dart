@@ -29,13 +29,13 @@ mixin _$ExpensesListController on _ExpensesListController, Store {
       Atom(name: '_ExpensesListController.expenses', context: context);
 
   @override
-  ObservableList<ExpenseModel> get expenses {
+  ObservableList<ExpenseEntity> get expenses {
     _$expensesAtom.reportRead();
     return super.expenses;
   }
 
   @override
-  set expenses(ObservableList<ExpenseModel> value) {
+  set expenses(ObservableList<ExpenseEntity> value) {
     _$expensesAtom.reportWrite(value, super.expenses, () {
       super.expenses = value;
     });
@@ -56,7 +56,7 @@ mixin _$ExpensesListController on _ExpensesListController, Store {
   }
 
   @override
-  void definePaymentFor(PaymentMethodModel selected, ExpenseModel expense) {
+  void definePaymentFor(PaymentTypeEntity selected, ExpenseEntity expense) {
     final _$actionInfo = _$_ExpensesListControllerActionController.startAction(
         name: '_ExpensesListController.definePaymentFor');
     try {

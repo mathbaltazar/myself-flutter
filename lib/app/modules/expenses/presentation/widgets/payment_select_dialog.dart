@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/model/payment_method_model.dart';
+import '../../domain/entity/payment_type_entity.dart';
 
 class PaymentSelectDialog extends StatelessWidget {
   const PaymentSelectDialog({
@@ -9,8 +9,8 @@ class PaymentSelectDialog extends StatelessWidget {
     required this.onSelect,
   });
 
-  final List<PaymentMethodModel> paymentMethods;
-  final Function(PaymentMethodModel?) onSelect;
+  final List<PaymentTypeEntity> paymentMethods;
+  final Function(PaymentTypeEntity?) onSelect;
 
   @override
   Widget build(BuildContext context) {

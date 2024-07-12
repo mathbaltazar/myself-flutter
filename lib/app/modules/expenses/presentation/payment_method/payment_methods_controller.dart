@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../domain/model/detailed_payment_method_model.dart';
-import '../../domain/model/payment_method_model.dart';
-import '../../domain/repository/payment_method_repository.dart';
+import '../../domain/entity/payment_type_detail_entity.dart';
+import '../../domain/entity/payment_type_entity.dart';
+import '../../domain/repository/payment_type_repository.dart';
 
 part 'payment_methods_controller.g.dart';
 
@@ -16,7 +16,7 @@ abstract class _PaymentMethodsController with Store {
   final PaymentMethodRepository repository;
 
   @observable
-  ObservableList<DetailedPaymentMethodModel> paymentMethodsList = ObservableList();
+  ObservableList<PaymentTypeDetailEntity> paymentMethodsList = ObservableList();
 
   final TextEditingController inputPaymentTextController =
       TextEditingController();
@@ -31,12 +31,12 @@ abstract class _PaymentMethodsController with Store {
   bool isEdit = false;
 
   @observable
-  PaymentMethodModel? editingPaymentMethod;
+  PaymentTypeEntity? editingPaymentMethod;
 
   setInputPaymentMethodError(value) => inputPaymentMethodError = value;
 
   loadPaymentMethods() async {
-    var paymentMethods = await repository.findAllDetailed();
+    var paymentMethods = await repository.findAllWithCount();
     paymentMethodsList.clear();
     paymentMethodsList.addAll(paymentMethods);
   }
@@ -49,7 +49,7 @@ abstract class _PaymentMethodsController with Store {
   }
 
   @action
-  prepareForEdit(PaymentMethodModel paymentMethod) {
+  prepareForEdit(PaymentTypeEntity paymentMethod) {
     isAdd = false;
     isEdit = true;
     editingPaymentMethod = paymentMethod;
@@ -69,7 +69,7 @@ abstract class _PaymentMethodsController with Store {
         .then((validated) {
       if (validated) {
         if (isAdd) {
-          final model = PaymentMethodModel(
+          final model = PaymentTypeEntity(
             name: inputPaymentTextController.text.trim(),
           );
 
@@ -91,7 +91,7 @@ abstract class _PaymentMethodsController with Store {
     });
   }
 
-  deletePaymentMethod(PaymentMethodModel paymentMethod) async {
+  deletePaymentMethod(PaymentTypeEntity paymentMethod) async {
     repository.deleteById(paymentMethod.id!);
     loadPaymentMethods();
   }

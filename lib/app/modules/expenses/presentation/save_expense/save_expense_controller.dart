@@ -5,10 +5,10 @@ import 'package:myselff_flutter/app/core/routes/app_routes.dart';
 import 'package:myselff_flutter/app/core/services/message_service.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/model/expense_model.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/model/payment_method_model.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/repository/expenses_repository.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/repository/payment_method_repository.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/entity/expense_entity.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/repository/expense_repository.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/repository/payment_type_repository.dart';
 
 part 'save_expense_controller.g.dart';
 
@@ -18,7 +18,7 @@ class SaveExpenseController = _SaveExpenseController
 abstract class _SaveExpenseController with Store {
   _SaveExpenseController(this.repository, this.paymentMethodRepository);
 
-  final ExpensesRepository repository;
+  final ExpensesRepositoryDeprecated repository;
   final PaymentMethodRepository paymentMethodRepository;
 
   final TextEditingController descriptionTextController =
@@ -44,10 +44,10 @@ abstract class _SaveExpenseController with Store {
   bool paid = false;
 
   @observable
-  List<PaymentMethodModel> paymentMethods = [PaymentMethodModel.none()];
+  List<PaymentTypeEntity> paymentMethods = [PaymentTypeEntity.none()];
 
   @observable
-  PaymentMethodModel? paymentMethodSelected;
+  PaymentTypeEntity? paymentMethodSelected;
 
   setEditingId(value) => editingId = value;
 
@@ -68,7 +68,7 @@ abstract class _SaveExpenseController with Store {
   }
 
   @action
-  setPaymentMethod(PaymentMethodModel? selected) => paymentMethodSelected = selected;
+  setPaymentMethod(PaymentTypeEntity? selected) => paymentMethodSelected = selected;
 
   init(int? editExpenseId) async {
     await _loadPaymentMethods();
@@ -78,13 +78,13 @@ abstract class _SaveExpenseController with Store {
   @action
   _loadPaymentMethods() async {
     paymentMethods = await paymentMethodRepository.findAll();
-    paymentMethods.insert(0, PaymentMethodModel.none());
+    paymentMethods.insert(0, PaymentTypeEntity.none());
   }
 
   editExpense(int? id) async {
     if (id != null) {
       setEditingId(id);
-      ExpenseModel? expenseModel = await repository.findById(id);
+      ExpenseEntity? expenseModel = await repository.findById(id);
       if (expenseModel != null) {
         descriptionTextController.text = expenseModel.description;
         valueTextController.text = expenseModel.amount.formatCurrency();
@@ -113,7 +113,7 @@ abstract class _SaveExpenseController with Store {
         [descriptionError, amountError].any((error) => error != null);
 
     if (!hasError) {
-      final expense = ExpenseModel(
+      final expense = ExpenseEntity(
         id: editingId,
         description: descriptionTextController.text.trim(),
         paymentDate: date,

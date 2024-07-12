@@ -4,7 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:myselff_flutter/app/core/presentation/widgets/confirmation_alert_dialog.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 
-import '../../domain/model/payment_method_model.dart';
+import '../../domain/entity/payment_type_entity.dart';
 import 'payment_methods_controller.dart';
 
 class PaymentMethodsPage extends StatefulWidget {
@@ -99,7 +99,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                             return Card(
                               child: ListTile(
                                 title: Text(
-                                  detailedPayment.paymentMethod.name,
+                                  detailedPayment.paymentType.name,
                                   overflow: TextOverflow.fade,
                                 ),
                                 subtitle: Text(
@@ -114,12 +114,12 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                     IconButton(
                                       onPressed: () => widget.controller
                                           .prepareForEdit(
-                                              detailedPayment.paymentMethod),
+                                              detailedPayment.paymentType),
                                       icon: const Icon(Icons.edit),
                                     ),
                                     IconButton(
                                       onPressed: () => _showDeleteConfirmation(
-                                          ctx, detailedPayment.paymentMethod),
+                                          ctx, detailedPayment.paymentType),
                                       icon: const Icon(Icons.delete_rounded),
                                     )
                                   ],
@@ -138,7 +138,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
   }
 
   _showDeleteConfirmation(
-      BuildContext context, PaymentMethodModel paymentMethod) {
+      BuildContext context, PaymentTypeEntity paymentMethod) {
     showAdaptiveDialog(
       context: context,
       builder: (_) => ConfirmationAlertDialog(

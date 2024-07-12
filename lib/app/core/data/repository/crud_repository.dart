@@ -7,11 +7,11 @@ abstract class CrudRepository<T> {
 
   Future<List<T>> findAll();
 
-  void save(T model);
+  void save(T entity);
 
   Future<T?> findById(int id);
 
-  void update(T model);
+  void update(T entity);
 
   void deleteById(int id);
 

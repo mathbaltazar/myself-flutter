@@ -3,7 +3,7 @@ import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 
-import '../../../domain/model/expense_model.dart';
+import '../../../domain/entity/expense_entity.dart';
 
 class ExpenseListItem extends StatelessWidget {
   const ExpenseListItem(
@@ -13,7 +13,7 @@ class ExpenseListItem extends StatelessWidget {
   });
 
   final void Function() onItemClick;
-  final ExpenseModel expense;
+  final ExpenseEntity expense;
 
   @override
   Widget build(BuildContext context) {

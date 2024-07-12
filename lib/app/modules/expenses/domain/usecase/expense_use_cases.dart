@@ -1,0 +1,54 @@
+import 'package:fpdart/fpdart.dart';
+import 'package:sqflite/sqflite.dart';
+
+import '../entity/expense_entity.dart';
+import '../entity/payment_type_entity.dart';
+import '../repository/expense_repository.dart';
+
+class ExpenseUseCases {
+  final ExpenseRepository _repository;
+
+  const ExpenseUseCases(this._repository);
+
+  Future<Either<DatabaseException, List<ExpenseEntity>>> getExpensesByYearMonth({required int year, required int month}) {
+    // returns a list of expenses filtering by the given year and month
+    return _repository.getExpensesByYearMonth(year: year, month: month);
+  }
+
+  Future<Either<DatabaseException, void>> saveExpense({required ExpenseEntity expenseEntity}) async {
+
+    // todo validates the expense properties
+    // BR1: by expense marked as not paid, payment type must be null
+
+
+    // check if the expense has already been saved (by containing a non-empty id)
+    if (expenseEntity.id == null) {
+      // if the expense doesn't have an id, it will be inserted
+      return _repository.insertExpense(expenseEntity: expenseEntity);
+    } else {
+      // otherwise, it will be updated
+      return _repository.updateExpense(expenseEntity: expenseEntity);
+    }
+  }
+
+  Future<Either<DatabaseException, void>> deleteExpense({required int expenseId}) async {
+    // deletes the expense by the given id
+    return _repository.deleteExpense(expenseId: expenseId);
+  }
+
+  Future<Either<DatabaseException, void>> togglePaid({required ExpenseEntity expenseEntity}) async {
+    // switch the boolean property "paid" of expense
+    expenseEntity.paid = !expenseEntity.paid;
+    // updates the expense
+    return _repository.updateExpense(expenseEntity: expenseEntity);
+  }
+
+  Future<Either<DatabaseException, void>> setPaymentTypeForExpense(
+      {required ExpenseEntity expenseEntity,
+      required PaymentTypeEntity? paymentTypeEntity}) async {
+    // set the payment type of expense
+    expenseEntity.paymentType = paymentTypeEntity;
+    // updates the expense
+    return _repository.updateExpense(expenseEntity: expenseEntity);
+  }
+}

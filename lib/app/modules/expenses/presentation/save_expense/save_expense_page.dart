@@ -4,7 +4,7 @@ import 'package:myselff_flutter/app/core/presentation/widgets/widgets/link_butto
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/core/utils/mask_util.dart';
 
-import '../../domain/model/payment_method_model.dart';
+import '../../domain/entity/payment_type_entity.dart';
 import 'save_expense_controller.dart';
 
 class SaveExpensePage extends StatefulWidget {
@@ -121,7 +121,7 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
                         const SizedBox(width: 15),
                         Expanded(
                           child: Observer(
-                            builder: (_) => DropdownMenu<PaymentMethodModel>(
+                            builder: (_) => DropdownMenu<PaymentTypeEntity>(
                               enabled: widget.controller.paid,
                               initialSelection: widget.controller.paymentMethodSelected ??
                                   widget.controller.paymentMethods.first,

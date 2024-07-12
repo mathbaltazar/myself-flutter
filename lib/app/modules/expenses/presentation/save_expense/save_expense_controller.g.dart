@@ -61,13 +61,13 @@ mixin _$SaveExpenseController on _SaveExpenseController, Store {
       Atom(name: '_SaveExpenseController.paymentMethods', context: context);
 
   @override
-  List<PaymentMethodModel> get paymentMethods {
+  List<PaymentTypeEntity> get paymentMethods {
     _$paymentMethodsAtom.reportRead();
     return super.paymentMethods;
   }
 
   @override
-  set paymentMethods(List<PaymentMethodModel> value) {
+  set paymentMethods(List<PaymentTypeEntity> value) {
     _$paymentMethodsAtom.reportWrite(value, super.paymentMethods, () {
       super.paymentMethods = value;
     });
@@ -77,13 +77,13 @@ mixin _$SaveExpenseController on _SaveExpenseController, Store {
       name: '_SaveExpenseController.paymentMethodSelected', context: context);
 
   @override
-  PaymentMethodModel? get paymentMethodSelected {
+  PaymentTypeEntity? get paymentMethodSelected {
     _$paymentMethodSelectedAtom.reportRead();
     return super.paymentMethodSelected;
   }
 
   @override
-  set paymentMethodSelected(PaymentMethodModel? value) {
+  set paymentMethodSelected(PaymentTypeEntity? value) {
     _$paymentMethodSelectedAtom.reportWrite(value, super.paymentMethodSelected,
         () {
       super.paymentMethodSelected = value;
@@ -137,7 +137,7 @@ mixin _$SaveExpenseController on _SaveExpenseController, Store {
   }
 
   @override
-  dynamic setPaymentMethod(PaymentMethodModel? selected) {
+  dynamic setPaymentMethod(PaymentTypeEntity? selected) {
     final _$actionInfo = _$_SaveExpenseControllerActionController.startAction(
         name: '_SaveExpenseController.setPaymentMethod');
     try {

@@ -7,7 +7,7 @@ import 'package:myselff_flutter/app/core/routes/app_routes.dart';
 import 'package:myselff_flutter/app/core/structure/inline_functions.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 
-import '../../domain/model/expense_model.dart';
+import '../../domain/entity/expense_entity.dart';
 import '../widgets/payment_select_dialog.dart';
 import 'components/expense_details_widget.dart';
 import 'components/expense_list_item.dart';
@@ -90,7 +90,7 @@ class ExpensesListPage extends StatelessWidget {
     );
   }
 
-  void _showExpenseDetails(BuildContext context, ExpenseModel expense) async {
+  void _showExpenseDetails(BuildContext context, ExpenseEntity expense) async {
     var method =
         await controller.findPaymentMethodById(expense.paymentMethodId);
     if (context.mounted) {

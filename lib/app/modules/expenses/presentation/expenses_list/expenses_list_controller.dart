@@ -4,10 +4,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobx/mobx.dart';
 import 'package:myselff_flutter/app/core/routes/app_routes.dart';
 import 'package:myselff_flutter/app/core/structure/inline_functions.dart';
-import '../../domain/model/payment_method_model.dart';
-import '../../domain/repository/payment_method_repository.dart';
-import '../../domain/model/expense_model.dart';
-import '../../domain/repository/expenses_repository.dart';
+
+import '../../domain/entity/expense_entity.dart';
+import '../../domain/entity/payment_type_entity.dart';
+import '../../domain/repository/expense_repository.dart';
+import '../../domain/repository/payment_type_repository.dart';
 import 'model/resume_model.dart';
 
 part 'expenses_list_controller.g.dart';
@@ -23,7 +24,7 @@ abstract class _ExpensesListController with Store {
   }
 
   final PaymentMethodRepository paymentMethodRepository;
-  final ExpensesRepository expenseRepository;
+  final ExpensesRepositoryDeprecated expenseRepository;
 
   @observable
   ResumeModel resumeModel = ResumeModel.instance();
@@ -32,7 +33,7 @@ abstract class _ExpensesListController with Store {
   setResumeModel(value) => resumeModel = value;
 
   @observable
-  ObservableList<ExpenseModel> expenses = ObservableList();
+  ObservableList<ExpenseEntity> expenses = ObservableList();
 
   void previousMonth() {
     var date = resumeModel.currentDate
@@ -61,7 +62,7 @@ abstract class _ExpensesListController with Store {
     loadExpenses(resumeModel.currentDate);
   }
 
-  void togglePaid(ExpenseModel expense) async {
+  void togglePaid(ExpenseEntity expense) async {
     expense.paid = !expense.paid;
     if (!expense.paid) {
       expense.paymentMethodId = null;
@@ -71,7 +72,7 @@ abstract class _ExpensesListController with Store {
   }
 
   void loadExpenses(DateTime currentDate) async {
-    List<ExpenseModel> loadedExpenses = await expenseRepository.findAll();
+    List<ExpenseEntity> loadedExpenses = await expenseRepository.findAll();
     loadedExpenses = loadedExpenses
         .where((expense) =>
     expense.paymentDate.year == currentDate.year &&
@@ -104,15 +105,15 @@ abstract class _ExpensesListController with Store {
     FirebaseAuth.instance.signOut();
   }
 
-  Future<List<PaymentMethodModel>> findAllPaymentMethods() =>
+  Future<List<PaymentTypeEntity>> findAllPaymentMethods() =>
       paymentMethodRepository.findAll();
 
-  Future<PaymentMethodModel?> findPaymentMethodById(int? id) async =>
+  Future<PaymentTypeEntity?> findPaymentMethodById(int? id) async =>
       id?.let((it) => paymentMethodRepository.findById(it));
 
   @action
-  void definePaymentFor(PaymentMethodModel selected,
-      ExpenseModel expense) {
+  void definePaymentFor(PaymentTypeEntity selected,
+      ExpenseEntity expense) {
     expense.paymentMethodId = selected.id;
     expenseRepository.update(expense);
     loadExpenses(resumeModel.currentDate);
