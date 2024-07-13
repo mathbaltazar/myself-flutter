@@ -1,6 +1,7 @@
 import 'dart:collection';
 
-import 'package:myselff_flutter/app/core/data/utils/type_converters.dart';
+import 'package:myselff_flutter/app/core/extensions/string_extensions.dart';
+import 'package:myselff_flutter/app/core/utils/type_converters.dart';
 
 import '../../../../domain/entity/expense_entity.dart';
 import '../../_mappers/entity_mapper.dart';
@@ -9,12 +10,14 @@ import 'payment_type_collection.dart';
 class ExpenseCollection extends MapView<String, dynamic>
     with EntityMapper<ExpenseCollection, ExpenseEntity> {
 
-  static const id = 'id';
-  static const paymentDate = 'payment_date';
-  static const description = 'description';
-  static const amount = 'amount';
-  static const paid = 'paid';
-  static const paymentTypeId = 'payment_type_id';
+  static const collectionName = 'expense';
+
+  static final id = 'id'.prefix(collectionName);
+  static final paymentDate = 'payment_date'.prefix(collectionName);
+  static final description = 'description'.prefix(collectionName);
+  static final amount = 'amount'.prefix(collectionName);
+  static final paid = 'paid'.prefix(collectionName);
+  static final paymentTypeId = 'payment_type_id'.prefix(collectionName).prefix('fk');
 
   const ExpenseCollection(super.map);
 
@@ -36,10 +39,9 @@ class ExpenseCollection extends MapView<String, dynamic>
       id: this[id],
       paymentDate: this[paymentDate].toString().parseDate(),
       description: this[description].toString(),
-      amount: this[amount].parseDouble(),
-      paid: this[paid].parseBoolean(),
-      paymentMethodId: this[paymentTypeId] as int?,
-      paymentType: PaymentTypeCollection(this).toEntity(),
+      amount: this[amount].toString().parseDouble(),
+      paid: this[paid].toString().parseBool(),
+      paymentType: this[paymentTypeId] != null ? PaymentTypeCollection(this).toEntity() : null,
     );
   }
 }

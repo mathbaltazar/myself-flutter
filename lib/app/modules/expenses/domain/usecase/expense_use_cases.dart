@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:myselff_flutter/app/core/exceptions/database_exception.dart';
 
 import '../entity/expense_entity.dart';
 import '../entity/payment_type_entity.dart';
@@ -10,12 +10,12 @@ class ExpenseUseCases {
 
   const ExpenseUseCases(this._repository);
 
-  Future<Either<DatabaseException, List<ExpenseEntity>>> getExpensesByYearMonth({required int year, required int month}) {
+  Future<Either<LocalDatabaseException, List<ExpenseEntity>>> getExpensesByYearMonth({required int year, required int month}) {
     // returns a list of expenses filtering by the given year and month
     return _repository.getExpensesByYearMonth(year: year, month: month);
   }
 
-  Future<Either<DatabaseException, void>> saveExpense({required ExpenseEntity expenseEntity}) async {
+  Future<Either<LocalDatabaseException, void>> saveExpense({required ExpenseEntity expenseEntity}) async {
 
     // todo validates the expense properties
     // BR1: by expense marked as not paid, payment type must be null
@@ -31,19 +31,19 @@ class ExpenseUseCases {
     }
   }
 
-  Future<Either<DatabaseException, void>> deleteExpense({required int expenseId}) async {
+  Future<Either<LocalDatabaseException, void>> deleteExpense({required int expenseId}) async {
     // deletes the expense by the given id
     return _repository.deleteExpense(expenseId: expenseId);
   }
 
-  Future<Either<DatabaseException, void>> togglePaid({required ExpenseEntity expenseEntity}) async {
+  Future<Either<LocalDatabaseException, void>> togglePaid({required ExpenseEntity expenseEntity}) async {
     // switch the boolean property "paid" of expense
     expenseEntity.paid = !expenseEntity.paid;
     // updates the expense
     return _repository.updateExpense(expenseEntity: expenseEntity);
   }
 
-  Future<Either<DatabaseException, void>> setPaymentTypeForExpense(
+  Future<Either<LocalDatabaseException, void>> setPaymentTypeForExpense(
       {required ExpenseEntity expenseEntity,
       required PaymentTypeEntity? paymentTypeEntity}) async {
     // set the payment type of expense

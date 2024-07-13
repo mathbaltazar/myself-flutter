@@ -1,4 +1,4 @@
-import '_collections/expense_collection.dart';
+import '../_collections/expense_collection.dart';
 
 abstract class ExpenseLocalDataSource {
   Future<List<ExpenseCollection>> getExpensesByYearMonth({required int year, required int month});

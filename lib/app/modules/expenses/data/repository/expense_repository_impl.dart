@@ -1,12 +1,12 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:myselff_flutter/app/modules/expenses/data/datasource/local/_collections/expense_collection.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:myselff_flutter/app/core/exceptions/database_exception.dart';
 
 import '../../domain/entity/expense_entity.dart';
 import '../../domain/repository/expense_repository.dart';
-import '../datasource/local/expense_local_data_source.dart';
+import '../datasource/local/_collections/expense_collection.dart';
+import '../datasource/local/expense/expense_local_data_source.dart';
 
-class ExpensesRepositoryImpl extends ExpensesRepositoryDeprecated {
+class ExpensesRepositoryImpl {
   @override
   Future<List<ExpenseEntity>> findAll() async {
     /*final db = await getDatabase();
@@ -86,45 +86,45 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
 
 
   @override
-  Future<Either<DatabaseException, void>> deleteExpense({required int expenseId}) async {
+  Future<Either<LocalDatabaseException, void>> deleteExpense({required int expenseId}) async {
     try {
       final result = await _expenseLocalDataSource.delete(expenseId: expenseId);
       return Right(result);
-    } on DatabaseException catch(e) {
+    } on LocalDatabaseException catch(e) {
       return Left(e);
     }
   }
 
   @override
-  Future<Either<DatabaseException, List<ExpenseEntity>>> getExpensesByYearMonth({required int year, required int month}) async {
+  Future<Either<LocalDatabaseException, List<ExpenseEntity>>> getExpensesByYearMonth({required int year, required int month}) async {
     try {
       final result = await _expenseLocalDataSource.getExpensesByYearMonth(year: year, month: month);
       return Right(result.map((e) => e.toEntity()).toList());
-    } on DatabaseException catch (e) {
+    } on LocalDatabaseException catch (e) {
       return Left(e);
     }
   }
 
   @override
-  Future<Either<DatabaseException, void>> insertExpense({required ExpenseEntity expenseEntity}) async {
+  Future<Either<LocalDatabaseException, void>> insertExpense({required ExpenseEntity expenseEntity}) async {
     try {
       final result = await _expenseLocalDataSource.insert(
         expenseCollection: const ExpenseCollection({}).fromEntity(expenseEntity),
       );
       return Right(result);
-    } on DatabaseException catch (e) {
+    } on LocalDatabaseException catch (e) {
       return Left(e);
     }
   }
 
   @override
-  Future<Either<DatabaseException, void>> updateExpense({required ExpenseEntity expenseEntity}) async {
+  Future<Either<LocalDatabaseException, void>> updateExpense({required ExpenseEntity expenseEntity}) async {
     try {
       final result = await _expenseLocalDataSource.update(
         expenseCollection: const ExpenseCollection({}).fromEntity(expenseEntity),
       );
       return Right(result);
-    } on DatabaseException catch (e) {
+    } on LocalDatabaseException catch (e) {
       return Left(e);
     }
   }
