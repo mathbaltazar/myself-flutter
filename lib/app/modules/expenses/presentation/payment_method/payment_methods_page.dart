@@ -25,14 +25,14 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          scrolledUnderElevation: 0,
-          /* If "0", removes shadowing after any body scroll physics */
-          title: const Text('Gerenciar'),
-        ),
-        body: Padding(
+    return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        /* If "0", removes shadowing after any body scroll physics */
+        title: const Text('Gerenciar'),
+      ),
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,

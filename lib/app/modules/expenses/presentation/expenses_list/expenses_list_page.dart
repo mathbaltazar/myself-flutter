@@ -21,19 +21,19 @@ class ExpensesListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: _userInfoTitleWidget(),
-          actions: [
-            Visibility(
-                visible: FirebaseAuth.instance.currentUser != null,
-                child: IconButton(
-                    onPressed: controller.signOut,
-                    icon: const Icon(Icons.logout)))
-          ],
-        ),
-        body: Padding(
+    return Scaffold(
+      appBar: AppBar(
+        title: _userInfoTitleWidget(),
+        actions: [
+          Visibility(
+              visible: FirebaseAuth.instance.currentUser != null,
+              child: IconButton(
+                  onPressed: controller.signOut,
+                  icon: const Icon(Icons.logout)))
+        ],
+      ),
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
@@ -77,16 +77,16 @@ class ExpensesListPage extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () async {
-              final persisted =
-                  await Modular.to.pushNamed(AppRoutes.expenseRoute + AppRoutes.saveExpense);
-              if (persisted == true) {
-                controller.loadExpenses(controller.resumeModel.currentDate);
-              }
-            }),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () async {
+            final persisted =
+                await Modular.to.pushNamed(AppRoutes.expenseRoute + AppRoutes.saveExpense);
+            if (persisted == true) {
+              controller.loadExpenses(controller.resumeModel.currentDate);
+            }
+          }),
     );
   }
 
