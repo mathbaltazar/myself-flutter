@@ -73,13 +73,13 @@ class MyselffTheme {
   static Color get colorSurface =>
       isDarkMode() ? darkColorScheme.surface : lightColorScheme.surface;
 
-  static Color get outlineColor =>
+  static Color get colorOutline =>
       isDarkMode() ? darkColorScheme.outline : lightColorScheme.outline;
 
   static Color get colorPrimary =>
       isDarkMode() ? darkColorScheme.primary : lightColorScheme.primary;
 
-  static Color get errorColor =>
+  static Color get colorError =>
       isDarkMode() ? darkColorScheme.error : lightColorScheme.error;
 
   static Color get colorSurfaceTint =>

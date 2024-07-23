@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:myselff_flutter/app/core/extensions/bool_extensions.dart';
 import 'package:myselff_flutter/app/core/extensions/string_extensions.dart';
 import 'package:myselff_flutter/app/core/utils/type_converters.dart';
 
@@ -28,7 +29,7 @@ class ExpenseCollection extends MapView<String, dynamic>
       paymentDate: entity.paymentDate.toDateString(),
       description: entity.description,
       amount: entity.amount,
-      paid: entity.paid,
+      paid: entity.paid.toBinaryString(),
       paymentTypeId: entity.paymentType?.id,
     });
   }

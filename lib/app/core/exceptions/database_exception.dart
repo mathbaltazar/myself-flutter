@@ -7,5 +7,5 @@ class LocalDatabaseException implements Exception {
 
   factory LocalDatabaseException.fromSQLiteDatabaseException(
           DatabaseException e) =>
-      LocalDatabaseException(e.result?.toString() ?? 'Unknown database error');
+      LocalDatabaseException(e.toString());
 }

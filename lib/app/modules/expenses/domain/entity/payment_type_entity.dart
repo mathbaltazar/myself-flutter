@@ -9,17 +9,16 @@ class PaymentTypeEntity {
 
   factory PaymentTypeEntity.none() => PaymentTypeEntity(name: 'Nenhum');
 
-  Map<String, Object?> toMap() {
-    return {
-      'id': id,
-      'name': name,
-    };
-  }
+  factory PaymentTypeEntity.withName(String name) => PaymentTypeEntity(name: name);
 
-  static PaymentTypeEntity fromMap(Map<String, Object?> map) {
-    return PaymentTypeEntity(
-      id: map['id'] as int,
-      name: map['name'].toString(),
-    );
-  }
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PaymentTypeEntity &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode;
 }

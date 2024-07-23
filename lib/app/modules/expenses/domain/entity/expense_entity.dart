@@ -7,7 +7,6 @@ class ExpenseEntity {
     required this.description,
     required this.amount,
     required this.paid,
-    this.paymentMethodId,
     this.paymentType,
   });
 
@@ -16,6 +15,26 @@ class ExpenseEntity {
   double amount;
   String description;
   DateTime paymentDate;
-  int? paymentMethodId;
   PaymentTypeEntity? paymentType;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ExpenseEntity &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          paid == other.paid &&
+          amount == other.amount &&
+          description == other.description &&
+          paymentDate == other.paymentDate &&
+          paymentType == other.paymentType;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      paid.hashCode ^
+      amount.hashCode ^
+      description.hashCode ^
+      paymentDate.hashCode ^
+      paymentType.hashCode;
 }

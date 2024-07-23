@@ -16,10 +16,22 @@ class ExpenseUseCases {
   }
 
   Future<Either<LocalDatabaseException, void>> saveExpense({required ExpenseEntity expenseEntity}) async {
+    // validates the expense data
+    // case of description is empty
+    if (expenseEntity.description.trim().isEmpty) {
+      return Left(LocalDatabaseException('Preencha a descrição'));
+    }
 
-    // todo validates the expense properties
+    // value of amount is less than or equal to zero
+    if (expenseEntity.amount <= 0) {
+      return Left(LocalDatabaseException('O valor deve ser maior que zero'));
+    }
+
+
     // BR1: by expense marked as not paid, payment type must be null
-
+    if (!expenseEntity.paid) {
+      expenseEntity.paymentType = null;
+    }
 
     // check if the expense has already been saved (by containing a non-empty id)
     if (expenseEntity.id == null) {
@@ -39,6 +51,12 @@ class ExpenseUseCases {
   Future<Either<LocalDatabaseException, void>> togglePaid({required ExpenseEntity expenseEntity}) async {
     // switch the boolean property "paid" of expense
     expenseEntity.paid = !expenseEntity.paid;
+
+    // BR1: by expense marked as not paid, payment type must be null
+    if (!expenseEntity.paid) {
+      expenseEntity.paymentType = null;
+    }
+
     // updates the expense
     return _repository.updateExpense(expenseEntity: expenseEntity);
   }
@@ -50,5 +68,10 @@ class ExpenseUseCases {
     expenseEntity.paymentType = paymentTypeEntity;
     // updates the expense
     return _repository.updateExpense(expenseEntity: expenseEntity);
+  }
+
+  Future<Either<LocalDatabaseException, ExpenseEntity?>> getById({required int? expenseId}) async {
+    // retrieve the expense by the given id
+    return _repository.getExpenseById(expenseId: expenseId);
   }
 }

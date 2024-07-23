@@ -5,4 +5,5 @@ abstract class ExpenseLocalDataSource {
   Future<void> insert({required ExpenseCollection expenseCollection});
   Future<void> update({required ExpenseCollection expenseCollection});
   Future<void> delete({required int expenseId});
+  Future<ExpenseCollection?> getById({required int? id});
 }

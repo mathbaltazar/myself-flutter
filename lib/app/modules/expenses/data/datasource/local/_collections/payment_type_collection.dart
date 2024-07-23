@@ -1,13 +1,17 @@
 import 'dart:collection';
 
+import 'package:myselff_flutter/app/core/extensions/string_extensions.dart';
+
 import '../../../../domain/entity/payment_type_entity.dart';
 import '../../_mappers/entity_mapper.dart';
 
 class PaymentTypeCollection extends MapView<String, dynamic>
     with EntityMapper<PaymentTypeCollection, PaymentTypeEntity> {
 
-  static const id = 'id';
-  static const name = 'name';
+  static const collectionName = 'payment_type';
+
+  static final id = 'id'.prefix(collectionName);
+  static final name = 'name'.prefix(collectionName);
 
   const PaymentTypeCollection(super.map);
 

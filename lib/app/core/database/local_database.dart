@@ -12,11 +12,11 @@ class LocalDatabase {
   *  migrations até a newVersion
   *  Sugestão: criar uma map que guarde as functions de migration?? onde as
   *  as keys são os números da versão ***/
-  Database? _db;
+  static Database? _db;
   Database get db => _db ??= throw LocalDatabaseException('Database not initialized');
 
-  Future<void> initialize() async {
-    _db ??= await openDatabase(
+  static Future<void> initialize() async {
+    _db = await openDatabase(
       join(await getDatabasesPath(), '${DatabaseConstants.databaseName}.db'),
       onCreate: _onCreateScript,
       onUpgrade: _onUpgradeScript,

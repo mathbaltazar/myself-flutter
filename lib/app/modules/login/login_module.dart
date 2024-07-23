@@ -1,5 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:myselff_flutter/app/core/routes/app_routes.dart';
+import 'package:myselff_flutter/app/core/constants/route_constants.dart';
 import 'package:myselff_flutter/app/core/services/injection_service.dart';
 
 import 'presentation/controllers/login_controller.dart';
@@ -15,7 +15,7 @@ class LoginModule extends Module {
   List<ModularRoute> get routes {
     return [
       ChildRoute(
-        AppRoutes.initialRoute,
+        RouteConstants.initialRoute,
         child: (_, __) => LoginPage(
           controller: Injector.of<LoginController>(),
         ),

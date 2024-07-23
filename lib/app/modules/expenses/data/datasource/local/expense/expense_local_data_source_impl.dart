@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-      import 'package:myselff_flutter/app/core/database/local_database.dart';
+import 'package:myselff_flutter/app/core/database/local_database.dart';
 import 'package:myselff_flutter/app/core/exceptions/database_exception.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -12,18 +12,21 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   final LocalDatabase localDatabase;
 
   @override
-  Future<List<ExpenseCollection>> getExpensesByYearMonth({required int year, required int month}) async {
+  Future<List<ExpenseCollection>> getExpensesByYearMonth(
+      {required int year, required int month}) async {
     try {
-      final yearMonthQueryParam = DateFormat('yyyy-MM').format(DateTime(year, month));
+      final yearMonthQueryParam =
+          DateFormat('yyyy-MM').format(DateTime(year, month));
 
       const query = '''
           SELECT * FROM expense e
               LEFT JOIN payment_type p 
                   ON e.fk_expense_payment_type_id = p.payment_type_id 
-                  AND e.expense_payment_date LIKE ?
+          WHERE e.expense_payment_date LIKE ?
       ''';
-      
-      final result = await localDatabase.db.rawQuery(query, ['$yearMonthQueryParam%']);
+
+      final result =
+          await localDatabase.db.rawQuery(query, ['$yearMonthQueryParam%']);
       return result.map(ExpenseCollection.new).toList();
     } on DatabaseException catch (e) {
       throw LocalDatabaseException.fromSQLiteDatabaseException(e);
@@ -36,7 +39,6 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
       await localDatabase.db.transaction((txn) async {
         return await txn.insert('expense', expenseCollection);
       });
-
     } on DatabaseException catch (e) {
       throw LocalDatabaseException.fromSQLiteDatabaseException(e);
     }
@@ -68,6 +70,23 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
           whereArgs: [expenseCollection[ExpenseCollection.id]],
         );
       });
+    } on DatabaseException catch (e) {
+      throw LocalDatabaseException.fromSQLiteDatabaseException(e);
+    }
+  }
+
+  @override
+  Future<ExpenseCollection?> getById({required int? id}) async {
+    try {
+      const query = '''
+          SELECT * FROM expense e
+              LEFT JOIN payment_type p 
+                  ON e.fk_expense_payment_type_id = p.payment_type_id
+          WHERE e.expense_id = ?
+      ''';
+
+      final result = await localDatabase.db.rawQuery(query, [id]);
+      return result.map(ExpenseCollection.new).singleOrNull;
     } on DatabaseException catch (e) {
       throw LocalDatabaseException.fromSQLiteDatabaseException(e);
     }

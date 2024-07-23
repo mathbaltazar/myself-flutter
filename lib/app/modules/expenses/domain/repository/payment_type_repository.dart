@@ -1,19 +1,14 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:myselff_flutter/app/core/data/repository/crud_repository.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:myselff_flutter/app/core/exceptions/database_exception.dart';
 
 import '../entity/payment_type_detail_entity.dart';
 import '../entity/payment_type_entity.dart';
 
-abstract class PaymentMethodRepository extends CrudRepository<PaymentTypeEntity> {
-  Future<bool> existsByName(String name);
-  Future<List<PaymentTypeDetailEntity>> findAllWithCount();
-}
-
 abstract class PaymentTypeRepository {
-  Future<Either<DatabaseException, List<PaymentTypeDetailEntity>>> getPaymentTypesDetailed();
-  Future<Either<DatabaseException, void>> insertPaymentType({required PaymentTypeEntity paymentTypeEntity});
-  Future<Either<DatabaseException, void>> updatePaymentType({required PaymentTypeEntity paymentTypeEntity});
-  Future<Either<DatabaseException, void>> deletePaymentType({required int paymentTypeId});
-  Future<Either<DatabaseException, bool>> existsPaymentTypeByName({required String name});
+  Future<Either<LocalDatabaseException, List<PaymentTypeDetailEntity>>> getPaymentTypesDetailed();
+  Future<Either<LocalDatabaseException, void>> insertPaymentType({required PaymentTypeEntity paymentTypeEntity});
+  Future<Either<LocalDatabaseException, void>> updatePaymentType({required PaymentTypeEntity paymentTypeEntity});
+  Future<Either<LocalDatabaseException, void>> deletePaymentType({required int paymentTypeId});
+  Future<Either<LocalDatabaseException, bool>> existsPaymentTypeByName({required String name});
+  Future<Either<LocalDatabaseException, List<PaymentTypeEntity>>> getPaymentTypes();
 }

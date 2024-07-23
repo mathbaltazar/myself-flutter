@@ -9,4 +9,5 @@ abstract class ExpenseRepository {
   Future<Either<LocalDatabaseException, void>> insertExpense({required ExpenseEntity expenseEntity});
   Future<Either<LocalDatabaseException, void>> updateExpense({required ExpenseEntity expenseEntity});
   Future<Either<LocalDatabaseException, void>> deleteExpense({required int expenseId});
+  Future<Either<LocalDatabaseException, ExpenseEntity?>> getExpenseById({required int? expenseId});
 }
