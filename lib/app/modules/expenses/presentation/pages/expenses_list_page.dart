@@ -41,69 +41,67 @@ class _ExpensesListPageState extends State<ExpensesListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: _userInfoTitleWidget(),
-          actions: [
-            Visibility(
-                visible: FirebaseAuth.instance.currentUser != null,
-                child: IconButton(
-                    onPressed: widget.controller.signOut,
-                    icon: const Icon(Icons.logout)))
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: widget.controller.onExpenseAddButtonClicked,
-          child: const Icon(Icons.add),
-        ),
-        body: Column(
-          //crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Text('Despesas'),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              child: _ExpensesMonthBoard(widget.controller),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: Text(
-                'Despesas',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: MyselffTheme.colorPrimary,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: _userInfoTitleWidget(),
+        actions: [
+          Visibility(
+              visible: FirebaseAuth.instance.currentUser != null,
+              child: IconButton(
+                  onPressed: widget.controller.signOut,
+                  icon: const Icon(Icons.logout)))
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: widget.controller.onExpenseAddButtonClicked,
+        child: const Icon(Icons.add),
+      ),
+      body: Column(
+        //crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text('Despesas'),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            child: _ExpensesMonthBoard(widget.controller),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text(
+              'Despesas',
+              style: TextStyle(
+                fontSize: 16,
+                color: MyselffTheme.colorPrimary,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Observer(
-                  builder: (_) => Conditional(widget.controller.expenses.isEmpty,
-                            onCondition: const Text("Nenhuma despesa cadastrada."),
-                            onElse: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: widget.controller.expenses.length,
-                              itemBuilder: (ctx, index) {
-                                final expenseItem = widget.controller.expenses[index];
-                                return ExpenseListItem(expenseItem,
-                                onItemClick: () {
-                                  widget.controller.setSelectedExpense(expenseItem);
-                                  _ExpenseDetailsBottomSheet(controller: widget.controller)
-                                      .show(ctx);
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Observer(
+                builder: (_) => Conditional(widget.controller.expenses.isEmpty,
+                          onCondition: const Text("Nenhuma despesa cadastrada."),
+                          onElse: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: widget.controller.expenses.length,
+                            itemBuilder: (ctx, index) {
+                              final expenseItem = widget.controller.expenses[index];
+                              return ExpenseListItem(expenseItem,
+                              onItemClick: () {
+                                widget.controller.setSelectedExpense(expenseItem);
+                                _ExpenseDetailsBottomSheet(controller: widget.controller)
+                                    .show(ctx);
+                          },
+                      );
                             },
-                        );
-                              },
-                            ),
-                    )
-                ),
+                          ),
+                  )
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
