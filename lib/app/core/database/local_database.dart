@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:myselff_flutter/app/core/constants/database_constants.dart';
 import 'package:myselff_flutter/app/core/exceptions/database_exception.dart';
 import 'package:myselff_flutter/app/modules/expenses/data/datasource/local/_collections/expense_collection.dart';
@@ -15,7 +13,7 @@ class LocalDatabase {
   static Database? _db;
   Database get db => _db ??= throw LocalDatabaseException('Database not initialized');
 
-  static Future<void> initialize() async {
+  static initialize() async {
     _db = await openDatabase(
       join(await getDatabasesPath(), '${DatabaseConstants.databaseName}.db'),
       onCreate: _onCreateScript,

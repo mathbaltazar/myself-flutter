@@ -11,7 +11,7 @@ import '../../domain/entity/expense_entity.dart';
 import '../../domain/entity/payment_type_entity.dart';
 import '../../domain/usecase/expense_use_cases.dart';
 
-part '../pages/expenses_list_controller.g.dart';
+part 'expenses_list_controller.g.dart';
 
 class ExpensesListController = _ExpensesListController
     with _$ExpensesListController;
@@ -91,7 +91,7 @@ abstract class _ExpensesListController with Store {
   }
 
   onExpenseDetailsEditButtonClicked() async {
-    // navigate to expense forward form page
+    // navigate to expense forward form page with arguments
     await Modular.to.pushNamed(
       RouteConstants.expenseRoute + RouteConstants.formExpenseRoute,
       arguments: {'expense_id': selectedExpense?.id},

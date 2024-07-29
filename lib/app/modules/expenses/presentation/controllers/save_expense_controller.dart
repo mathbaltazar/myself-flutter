@@ -36,7 +36,7 @@ abstract class _SaveExpenseController with Store {
   DateTime date = DateTime.now();
 
   @observable
-  bool paid = false;
+  bool paid = true;
 
   @observable
   List<PaymentTypeEntity> paymentTypesList = [PaymentTypeEntity.none()];

@@ -7,19 +7,17 @@ import 'presentation/pages/login_page.dart';
 
 class LoginModule extends Module {
   @override
-  List<Bind> get binds => [
-        Bind((i) => LoginController()),
-      ];
+  void binds(i) {
+      i.add(LoginController.new);
+  }
 
   @override
-  List<ModularRoute> get routes {
-    return [
-      ChildRoute(
+  void routes(r) {
+      r.child(
         RouteConstants.initialRoute,
-        child: (_, __) => LoginPage(
-          controller: Injector.of<LoginController>(),
+        child: (_) => LoginPage(
+          controller: InjectorService.of<LoginController>(),
         ),
-      ),
-    ];
+      );
   }
 }
