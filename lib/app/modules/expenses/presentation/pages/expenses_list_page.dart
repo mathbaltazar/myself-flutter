@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -9,14 +10,13 @@ import 'package:myselff_flutter/app/core/components/containers/statefui_componen
 import 'package:myselff_flutter/app/core/components/dialogs/confirmation_alert_dialog.dart';
 import 'package:myselff_flutter/app/core/components/indicators/circular_progress_check_indicator.dart';
 import 'package:myselff_flutter/app/core/components/mixins/bottom_sheet_mixin.dart';
-import 'package:myselff_flutter/app/core/extensions/object_extensions.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 
+import '../controllers/expenses_list_controller.dart';
 import 'components/expense_list_item.dart';
 import 'components/payment_select_dialog.dart';
-import '../controllers/expenses_list_controller.dart';
 
 part 'components/expense_details_bottom_sheet.dart';
 part 'components/expenses_month_board.dart';
@@ -111,7 +111,16 @@ class _ExpensesListPageState extends State<ExpensesListPage> {
     return Row(
       children: [
         CircleAvatar(
-          foregroundImage: user?.let((it) => NetworkImage(it.photoURL!)),
+          child: CachedNetworkImage(
+            imageUrl: user?.photoURL ?? '',
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(image: imageProvider),
+                borderRadius: BorderRadius.circular(24),
+              ),
+            ),
+            errorWidget: (context, url, error) => const Icon(Icons.person),
+          ),
         ),
         const SizedBox(width: 16),
         Text(user?.displayName ?? 'myselff'),
