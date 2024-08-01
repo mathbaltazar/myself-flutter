@@ -28,11 +28,11 @@ class LoginController {
       }
     } on FirebaseAuthException catch (exception) {
       debugPrint(exception.toString());
-      MessageService.showMessage(
+      MessageService.showErrorMessage(
           exception.message ?? 'Erro ao autenticar usuário');
     } catch (exception) {
       debugPrint(exception.toString());
-      MessageService.showMessage('Erro ao autenticar usuário');
+      MessageService.showErrorMessage('Erro ao autenticar usuário');
     } finally {
       loading.value = false;
     }

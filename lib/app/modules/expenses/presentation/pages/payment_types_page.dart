@@ -30,52 +30,50 @@ class _PaymentTypesPageState extends State<PaymentTypesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          scrolledUnderElevation: 0, /* If "0", removes shadowing after any body scroll physics */
-          title: const Text('Gerenciar'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Observer(
-                builder: (_) => Conditional(widget.controller.showPaymentTypeInput,
-                  onCondition: _PaymentTypeInput(widget.controller),
-                  onElse: Row(
-                    children: [
-                      const Icon(Icons.credit_card),
-                      const SizedBox(width: 8),
-                      const Text('Tipos de pagamento'),
-                      const Spacer(),
-                      TextButton.icon(
-                          icon: const Icon(Icons.add),
-                          onPressed: widget.controller.onAddNewPaymentTypeClick,
-                          label: const Text('Adicionar')),
-                    ],
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        scrolledUnderElevation: 0, /* If "0", removes shadowing after any body scroll physics */
+        title: const Text('Gerenciar'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Observer(
+              builder: (_) => Conditional(widget.controller.showPaymentTypeInput,
+                onCondition: _PaymentTypeInput(widget.controller),
+                onElse: Row(
+                  children: [
+                    const Icon(Icons.credit_card),
+                    const SizedBox(width: 8),
+                    const Text('Tipos de pagamento'),
+                    const Spacer(),
+                    TextButton.icon(
+                        icon: const Icon(Icons.add),
+                        onPressed: widget.controller.onAddNewPaymentTypeClick,
+                        label: const Text('Adicionar')),
+                  ],
                 ),
               ),
-              const Divider(),
-              Expanded(
-                child: Observer(
-                  builder: (_) => Conditional(widget.controller.paymentTypesList.isEmpty,
-                    onCondition: const Center(child: Text('Não há tipos de pagamento para listar.')),
-                    onElse: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: widget.controller.paymentTypesList.length,
-                      itemBuilder: (_, index) => _PaymentTypeDetailListItem(
-                        widget.controller,
-                        widget.controller.paymentTypesList[index],
-                      ),
+            ),
+            const Divider(),
+            Expanded(
+              child: Observer(
+                builder: (_) => Conditional(widget.controller.paymentTypesList.isEmpty,
+                  onCondition: const Center(child: Text('Não há tipos de pagamento para listar.')),
+                  onElse: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: widget.controller.paymentTypesList.length,
+                    itemBuilder: (_, index) => _PaymentTypeDetailListItem(
+                      widget.controller,
+                      widget.controller.paymentTypesList[index],
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
