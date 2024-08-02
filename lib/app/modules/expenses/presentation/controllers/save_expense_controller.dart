@@ -1,33 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:mobx/mobx.dart';
 import 'package:myselff_flutter/app/core/constants/route_constants.dart';
+import 'package:myselff_flutter/app/core/extensions/object_extensions.dart';
 import 'package:myselff_flutter/app/core/services/message_service.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/entity/expense_entity.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/usecase/expense_use_cases.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/usecase/payment_type_use_cases.dart';
+import 'package:signals/signals.dart';
 
-import '../../domain/entity/expense_entity.dart';
-import '../../domain/entity/payment_type_entity.dart';
-import '../../domain/usecase/expense_use_cases.dart';
-import '../../domain/usecase/payment_type_use_cases.dart';
-
-part 'save_expense_controller.g.dart';
-
-class SaveExpenseController = _SaveExpenseController
-    with _$SaveExpenseController;
-
-abstract class _SaveExpenseController with Store {
-  _SaveExpenseController(this.expenseUseCases, this.paymentTypeUseCases);
+class SaveExpenseController {
+  SaveExpenseController(this.expenseUseCases, this.paymentTypeUseCases);
 
   final ExpenseUseCases expenseUseCases;
   final PaymentTypeUseCases paymentTypeUseCases;
 
-  final TextEditingController descriptionTextController =
-      TextEditingController();
-  final TextEditingController valueTextController =
-      TextEditingController(text: 0.0.formatCurrency());
-  final TextEditingController dateTimeTextController =
-      TextEditingController(text: DateTime.now().format());
+  final TextEditingController descriptionTextController = TextEditingController();
+  final TextEditingController valueTextController = TextEditingController(text: 0.0.formatCurrency());
+  final TextEditingController dateTimeTextController = TextEditingController(text: DateTime.now().format());
 
   int? editingId;
 
@@ -35,19 +27,11 @@ abstract class _SaveExpenseController with Store {
 
   DateTime date = DateTime.now();
 
-  @observable
-  bool paid = true;
-
-  @observable
-  List<PaymentTypeEntity> paymentTypesList = [PaymentTypeEntity.none()];
-
-  @observable
-  PaymentTypeEntity? selectedPaymentType;
+  final paymentTypesList = listSignal([PaymentTypeEntity.none()]);
+  final selectedPaymentType = signal<PaymentTypeEntity?>(null);
+  final paid = signal(true);
 
   setEditingId(value) => editingId = value;
-
-  @action
-  setPaid(bool value) => paid = value;
 
   setDate(value) {
     if (value != null) {
@@ -56,23 +40,16 @@ abstract class _SaveExpenseController with Store {
     }
   }
 
-  @action
-  setPaymentType(PaymentTypeEntity? selected) => selectedPaymentType = selected;
-
   init(int? editExpenseId) async {
     await _loadPaymentTypes();
     await _loadExpenseData(editExpenseId);
   }
 
-  @action
   _loadPaymentTypes() async {
     final result = await paymentTypeUseCases.getPaymentTypes();
     result.fold(
       (error) => MessageService.showErrorMessage(error.message),
-      (items) {
-        paymentTypesList.clear();
-        paymentTypesList.addAll([PaymentTypeEntity.none(), ...items]);
-      },
+      (items) => paymentTypesList.set([PaymentTypeEntity.none(), ...items]),
     );
   }
 
@@ -80,20 +57,17 @@ abstract class _SaveExpenseController with Store {
     final result = await expenseUseCases.getById(expenseId: id);
     result.fold(
       (error) => MessageService.showErrorMessage(error.message),
-      (entity) {
-        ExpenseEntity? expenseEntity = entity;
-        if (expenseEntity != null) {
+      (success) => success?.let((expenseEntity) {
           setEditingId(id);
           descriptionTextController.text = expenseEntity.description;
           valueTextController.text = expenseEntity.amount.formatCurrency();
           setDate(expenseEntity.paymentDate);
-          paid = expenseEntity.paid;
+          paid.set(expenseEntity.paid);
 
-          setPaymentType(paymentTypesList
+          selectedPaymentType.set(paymentTypesList
               .where((element) => element == expenseEntity.paymentType)
-              .firstOrNull);
-        }
-      },
+              .singleOrNull);
+        }),
     );
   }
 
@@ -101,8 +75,8 @@ abstract class _SaveExpenseController with Store {
     await Modular.to.pushNamed(RouteConstants.expenseRoute + RouteConstants.paymentTypeRoute);
     await _loadPaymentTypes();
 
-    setPaymentType(paymentTypesList
-        .where((element) => element.id == selectedPaymentType?.id)
+    selectedPaymentType.set(paymentTypesList
+        .where((element) => element.id == selectedPaymentType.get()?.id)
         .singleOrNull);
   }
 
@@ -113,8 +87,8 @@ abstract class _SaveExpenseController with Store {
           description: descriptionTextController.text.trim(),
           paymentDate: date,
           amount: valueTextController.text.parseCurrency(),
-          paid: paid,
-          paymentType: paid ? selectedPaymentType : null);
+          paid: paid.get(),
+          paymentType: selectedPaymentType.get());
 
       final result = await expenseUseCases.saveExpense(expenseEntity: expenseEntity);
 
@@ -125,7 +99,7 @@ abstract class _SaveExpenseController with Store {
         },
         (success) {
           MessageService.showMessage('Despesa salva!');
-          Modular.to.pop(true);
+          Modular.to.pop();
         },
       );
     } on Exception {

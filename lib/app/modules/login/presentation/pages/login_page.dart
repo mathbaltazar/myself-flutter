@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:myselff_flutter/app/core/components/containers/conditional.dart';
 import 'package:myselff_flutter/app/modules/login/presentation/controllers/login_controller.dart';
+import 'package:signals/signals_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.controller});
@@ -33,15 +35,13 @@ class _LoginPageState extends State<LoginPage> {
         const Text('Vamos começar ?'),
         const SizedBox(height: 20),
         OutlinedButton.icon(
-          icon: ValueListenableBuilder(
-            valueListenable: widget.controller.loading,
-            builder: (context, value, widget) {
-              if (value) {
-                return const CircularProgressIndicator.adaptive();
-              }
-              return const Icon(Icons.android);
-            },
-          ),
+          icon: Watch.builder(
+                builder: (context) => Conditional(
+                  widget.controller.loading.get(),
+                  onCondition: const CircularProgressIndicator.adaptive(),
+                  onElse: const Icon(Icons.android),
+                ),
+              ),
           onPressed: widget.controller.loginWithGoogle,
           label: const Text('Entrar com Google'),
         ),

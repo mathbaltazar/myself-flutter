@@ -41,15 +41,15 @@ class _ExpensesMonthBoardState extends State<_ExpensesMonthBoard>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Observer(builder: (context) =>
+                      Watch.builder(builder: (_) =>
                           CircularProgressCheckIndicator(progressValue: _progressValue()),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Total do mês'),
-                          Observer(builder: (_) => Text(
-                                '\$ ${widget.controller.totalExpensesAmount.formatCurrency()}',
+                          Watch.builder(builder: (_) => Text(
+                                '\$ ${widget.controller.totalExpensesAmount.get().formatCurrency()}',
                                 style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -58,8 +58,8 @@ class _ExpensesMonthBoardState extends State<_ExpensesMonthBoard>
                           ),
                           const SizedBox(height: 10),
                           const Text('Total pago'),
-                          Observer(builder: (_) => Text(
-                                '\$ ${widget.controller.totalPaidExpensesAmount.formatCurrency()}',
+                          Watch.builder(builder: (_) => Text(
+                                '\$ ${widget.controller.totalPaidExpensesAmount.get().formatCurrency()}',
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -68,11 +68,11 @@ class _ExpensesMonthBoardState extends State<_ExpensesMonthBoard>
                           ),
                           const SizedBox(height: 10),
                           const Text('Ainda falta'),
-                          Observer(builder: (context) => Text(
-                                '\$ ${widget.controller.totalUnpaid.formatCurrency()}',
+                          Watch.builder(builder: (_) => Text(
+                                '\$ ${widget.controller.totalUnpaid.get().formatCurrency()}',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: widget.controller.totalUnpaid == 0
+                                    color: widget.controller.totalUnpaid.get() == 0
                                         ? MyselffTheme.colorPrimary.withAlpha(120)
                                         : MyselffTheme.colorError.withAlpha(120)),
                               )
@@ -82,9 +82,8 @@ class _ExpensesMonthBoardState extends State<_ExpensesMonthBoard>
                     ],
                   ),
                   const SizedBox(height: 15),
-                  Observer(builder: (_) => Text(
-                              widget.controller.currentDate
-                                  .formatYearMonthExtended(),
+                  Watch.builder(builder: (_) => Text(
+                              widget.controller.currentDate.get().formatYearMonthExtended(),
                               style: const TextStyle(fontSize: 16))
                           .animate(controller: animController)
                           .slideX(begin: startAnim, curve: Curves.easeOutCubic),
@@ -106,9 +105,9 @@ class _ExpensesMonthBoardState extends State<_ExpensesMonthBoard>
     );
   }
 
-  double _progressValue() => widget.controller.totalExpensesAmount == 0
+  double _progressValue() => widget.controller.totalExpensesAmount.get() == 0
       ? 1.0
-      : widget.controller.totalPaidExpensesAmount / widget.controller.totalExpensesAmount;
+      : widget.controller.totalPaidExpensesAmount.get() / widget.controller.totalExpensesAmount.get();
 
   @override
   void dispose() {

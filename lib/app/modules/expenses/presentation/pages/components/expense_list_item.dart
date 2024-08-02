@@ -1,15 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
-import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
-import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
+part of '../expenses_list_page.dart';
 
-import '../../../domain/entity/expense_entity.dart';
-
-class ExpenseListItem extends StatelessWidget {
-  const ExpenseListItem(
+class _ExpenseListItem extends StatelessWidget {
+  const _ExpenseListItem(
     this.expense, {
     required this.onItemClick,
-    super.key,
   });
 
   final Function() onItemClick;
