@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:myselff_flutter/app/core/components/buttons/link_button.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/core/utils/mask_util.dart';
-
-import '../../domain/entity/payment_type_entity.dart';
-import '../controllers/save_expense_controller.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
+import 'package:myselff_flutter/app/modules/expenses/presentation/controllers/save_expense_controller.dart';
+import 'package:signals/signals_flutter.dart';
 
 class SaveExpensePage extends StatefulWidget {
   const SaveExpensePage(
-      {super.key, required this.controller, required this.expenseId});
+      {super.key, required this.controller, this.expenseId});
 
   final SaveExpenseController controller;
   final int? expenseId;
@@ -89,10 +88,10 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
                       const SizedBox(width: 15),
                       const Text('Está pago?'),
                       const Spacer(),
-                      Observer(
+                      Watch.builder(
                         builder: (_) => Switch(
-                            value: widget.controller.paid,
-                            onChanged: widget.controller.setPaid,
+                            value: widget.controller.paid.get(),
+                            onChanged: widget.controller.paid.set,
                           )
                       ),
                     ],
@@ -103,15 +102,15 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
                       const Icon(Icons.credit_card),
                       const SizedBox(width: 15),
                       Expanded(
-                        child: Observer(
+                        child: Watch.builder(
                           builder: (_) => DropdownMenu<PaymentTypeEntity>(
-                            enabled: widget.controller.paid,
-                            initialSelection: widget.controller.selectedPaymentType ??
+                            enabled: widget.controller.paid.get(),
+                            initialSelection: widget.controller.selectedPaymentType.get() ??
                                 widget.controller.paymentTypesList.first,
-                            onSelected: widget.controller.setPaymentType,
+                            onSelected: widget.controller.selectedPaymentType.set,
                             label: const Text('Tipo de pagamento'),
                             textStyle: TextStyle(
-                              color: widget.controller.paid ? null : Colors.black26
+                              color: widget.controller.paid.get() ? null : Colors.black26
                             ),
                             expandedInsets: EdgeInsets.zero,
                             inputDecorationTheme: const InputDecorationTheme(

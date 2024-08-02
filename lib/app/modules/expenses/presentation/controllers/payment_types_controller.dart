@@ -1,61 +1,46 @@
-import 'package:flutter/cupertino.dart';
-import 'package:mobx/mobx.dart';
+import 'package:flutter/material.dart';
 import 'package:myselff_flutter/app/core/extensions/object_extensions.dart';
 import 'package:myselff_flutter/app/core/services/message_service.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_detail_entity.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/usecase/payment_type_use_cases.dart';
+import 'package:signals/signals.dart';
 
-import '../../domain/entity/payment_type_detail_entity.dart';
-import '../../domain/entity/payment_type_entity.dart';
-import '../../domain/usecase/payment_type_use_cases.dart';
-
-part 'payment_types_controller.g.dart';
-
-class PaymentTypesController = _PaymentTypesController
-    with _$PaymentTypesController;
-
-abstract class _PaymentTypesController with Store {
-  _PaymentTypesController(this.paymentTypeUseCases);
+class PaymentTypesController {
+  PaymentTypesController(this.paymentTypeUseCases);
 
   final PaymentTypeUseCases paymentTypeUseCases;
 
-  @observable
-  ObservableList<PaymentTypeDetailEntity> paymentTypesList = ObservableList();
-  @action
-  setPaymentTypeList(ObservableList<PaymentTypeDetailEntity> value) =>
-      paymentTypesList = value;
 
   final TextEditingController paymentTypeInputTextController = TextEditingController();
-
-  @observable
-  bool showPaymentTypeInput = false;
-
-  @observable
+  final paymentTypesList = listSignal<PaymentTypeDetailEntity>([]);
+  final showPaymentTypeInput = signal(false);
+  
   PaymentTypeEntity? editingPaymentType;
 
-  @action
+  
   onAddNewPaymentTypeClick() {
-    showPaymentTypeInput = true;
+    showPaymentTypeInput.set(true);
     paymentTypeInputTextController.clear();
   }
-
-  @action
+  
   onEditPaymentTypeClick(PaymentTypeEntity paymentTypeEntity) {
-    showPaymentTypeInput = true;
+    showPaymentTypeInput.set(true);
     editingPaymentType = paymentTypeEntity;
     paymentTypeInputTextController.text = paymentTypeEntity.name;
   }
 
-  @action
   onPaymentTypeInputCancelClick() {
-    showPaymentTypeInput = false;
+    showPaymentTypeInput.set(false);
     editingPaymentType = null;
   }
 
   onPaymentTypeInputConfirmClick() async {
     try {
       // Obtain the entity with id in case of a editing, otherwise create a new entity
-      final paymentTypeEntity = editingPaymentType != null
-          ? editingPaymentType!.also((it) => it.name = paymentTypeInputTextController.text.trim())
-          : PaymentTypeEntity.withName(paymentTypeInputTextController.text.trim());
+      final paymentTypeEntity = editingPaymentType?.also(
+                (it) => it.name = paymentTypeInputTextController.text.trim()) 
+          ?? PaymentTypeEntity.withName(paymentTypeInputTextController.text.trim());
 
       // call to save the payment type entity use case
       // if error, shows a error message
@@ -101,7 +86,7 @@ abstract class _PaymentTypesController with Store {
       final result = await paymentTypeUseCases.getPaymentTypesDetailed();
       result.fold(
         (error) => MessageService.showErrorMessage('Erro ao buscar os tipos de pagamento'),
-        (items) => setPaymentTypeList(ObservableList.of(items)),
+        (items) => paymentTypesList.set(items),
       );
     } on Exception {
       rethrow;

@@ -2,23 +2,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:myselff_flutter/app/core/components/buttons/link_button.dart';
 import 'package:myselff_flutter/app/core/components/containers/conditional.dart';
-import 'package:myselff_flutter/app/core/components/containers/statefui_component.dart';
 import 'package:myselff_flutter/app/core/components/dialogs/confirmation_alert_dialog.dart';
 import 'package:myselff_flutter/app/core/components/indicators/circular_progress_check_indicator.dart';
+import 'package:myselff_flutter/app/core/components/lists/typed_list_view.dart';
 import 'package:myselff_flutter/app/core/components/mixins/bottom_sheet_mixin.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
-
-import '../controllers/expenses_list_controller.dart';
-import 'components/expense_list_item.dart';
-import 'components/payment_select_dialog.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/entity/expense_entity.dart';
+import 'package:myselff_flutter/app/modules/expenses/presentation/controllers/expenses_list_controller.dart';
+import 'package:myselff_flutter/app/modules/expenses/presentation/dialogs/payment_select_dialog.dart';
+import 'package:signals/signals_flutter.dart';
 
 part 'components/expense_details_bottom_sheet.dart';
+part 'components/expense_list_item.dart';
 part 'components/expenses_month_board.dart';
 
 
@@ -80,23 +80,20 @@ class _ExpensesListPageState extends State<ExpensesListPage> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Observer(
-                builder: (_) => Conditional(widget.controller.expenses.isEmpty,
+              child: Watch.builder(
+                builder: (_) => Conditional(widget.controller.expensesList.isEmpty,
                           onCondition: const Text("Nenhuma despesa cadastrada."),
-                          onElse: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: widget.controller.expenses.length,
-                            itemBuilder: (ctx, index) {
-                              final expenseItem = widget.controller.expenses[index];
-                              return ExpenseListItem(expenseItem,
+                          onElse: TypedListView(
+                          items: widget.controller.expensesList,
+                          itemBuilder: (expenseItem) => _ExpenseListItem(
+                              expenseItem,
                               onItemClick: () {
-                                widget.controller.setSelectedExpense(expenseItem);
+                                widget.controller.selectedExpense.set(expenseItem);
                                 _ExpenseDetailsBottomSheet(controller: widget.controller)
-                                    .show(ctx);
-                          },
-                      );
-                            },
-                          ),
+                                  .show(context);
+                              },
+                            ),
+                        ),
                   )
               ),
             ),

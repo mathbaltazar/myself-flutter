@@ -4,12 +4,13 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:myselff_flutter/app/core/constants/route_constants.dart';
 import 'package:myselff_flutter/app/core/services/message_service.dart';
+import 'package:signals/signals.dart';
 
 class LoginController {
-  final loading = ValueNotifier(false);
+  final loading = signal(false);
 
   Future<void> loginWithGoogle() async {
-    loading.value = true;
+    loading.set(true);
     try {
       final googleAccount = await GoogleSignIn().signIn();
 
@@ -34,7 +35,7 @@ class LoginController {
       debugPrint(exception.toString());
       MessageService.showErrorMessage('Erro ao autenticar usuário');
     } finally {
-      loading.value = false;
+      loading.set(false);
     }
   }
 
@@ -43,10 +44,10 @@ class LoginController {
   }
 
   void checkLogin() {
-    loading.value = true;
+    loading.set(true);
     if (FirebaseAuth.instance.currentUser != null) {
       Modular.to.pushReplacementNamed(RouteConstants.expenseRoute);
     }
-    loading.value = false;
+    loading.set(false);
   }
 }

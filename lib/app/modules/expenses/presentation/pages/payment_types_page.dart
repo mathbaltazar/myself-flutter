@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:myselff_flutter/app/core/components/containers/conditional.dart';
 import 'package:myselff_flutter/app/core/components/dialogs/confirmation_alert_dialog.dart';
+import 'package:myselff_flutter/app/core/components/lists/typed_list_view.dart';
 import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
-
-import '../../domain/entity/payment_type_detail_entity.dart';
-import '../../domain/entity/payment_type_entity.dart';
-import '../controllers/payment_types_controller.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_detail_entity.dart';
+import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
+import 'package:myselff_flutter/app/modules/expenses/presentation/controllers/payment_types_controller.dart';
+import 'package:signals/signals_flutter.dart';
 
 part 'components/payment_type_detail_list_item.dart';
 part 'components/payment_type_input.dart';
@@ -40,8 +40,8 @@ class _PaymentTypesPageState extends State<PaymentTypesPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Observer(
-              builder: (_) => Conditional(widget.controller.showPaymentTypeInput,
+            Watch.builder(
+              builder: (_) => Conditional(widget.controller.showPaymentTypeInput.get(),
                 onCondition: _PaymentTypeInput(widget.controller),
                 onElse: Row(
                   children: [
@@ -59,16 +59,12 @@ class _PaymentTypesPageState extends State<PaymentTypesPage> {
             ),
             const Divider(),
             Expanded(
-              child: Observer(
+              child: Watch.builder(
                 builder: (_) => Conditional(widget.controller.paymentTypesList.isEmpty,
                   onCondition: const Center(child: Text('Não há tipos de pagamento para listar.')),
-                  onElse: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: widget.controller.paymentTypesList.length,
-                    itemBuilder: (_, index) => _PaymentTypeDetailListItem(
-                      widget.controller,
-                      widget.controller.paymentTypesList[index],
-                    ),
+                  onElse: TypedListView(
+                    items: widget.controller.paymentTypesList,
+                    itemBuilder: (item) => _PaymentTypeDetailListItem(widget.controller, item),
                   ),
                 ),
               ),
