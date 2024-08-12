@@ -10,7 +10,7 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      scaffoldMessengerKey: MessageService.instance(context),
+      scaffoldMessengerKey: MessageService.instance(),
       routerConfig: Modular.routerConfig,
       title: 'myselff',
       theme: ThemeData(

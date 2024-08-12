@@ -2,8 +2,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 import 'core/constants/route_constants.dart';
 import 'core/database/local_database.dart';
-import 'modules/expenses/expense_module.dart';
-import 'modules/login/login_module.dart';
+import 'modules/home/home_module.dart';
 
 class AppModule extends Module {
   @override
@@ -18,11 +17,7 @@ class AppModule extends Module {
   void routes(r) {
     r.module(
       RouteConstants.initialRoute,
-      module: LoginModule(),
-    );
-    r.module(
-      RouteConstants.expenseRoute,
-      module: ExpenseModule(),
+      module: HomeModule(),
     );
   }
 }

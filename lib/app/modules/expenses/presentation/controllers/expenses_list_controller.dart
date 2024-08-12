@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:myselff_flutter/app/core/constants/route_constants.dart';
 import 'package:myselff_flutter/app/core/extensions/list_extensions.dart';
 import 'package:myselff_flutter/app/core/extensions/signals_extensions.dart';
@@ -141,11 +139,5 @@ class ExpensesListController {
     } on Exception {
       rethrow;
     }
-  }
-
-  signOut() async {
-    // move to isolated scope (SOLID warning!!!!!!)
-    GoogleSignIn().signOut();
-    FirebaseAuth.instance.signOut();
   }
 }
