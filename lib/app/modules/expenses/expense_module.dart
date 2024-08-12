@@ -48,7 +48,7 @@ class ExpenseModule extends Module {
       RouteConstants.formExpenseRoute,
       child: (_) => SaveExpensePage(
         controller: InjectorService.of<SaveExpenseController>(),
-        expenseId: r.args.data != null ? r.args.data['expense_id'] : null,
+        expenseId: r.args.data?['expense_id'],
       ),
     );
     r.child(

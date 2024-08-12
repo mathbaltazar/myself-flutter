@@ -1,5 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -43,14 +41,7 @@ class _ExpensesListPageState extends State<ExpensesListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: _userInfoTitleWidget(),
-        actions: [
-          Visibility(
-              visible: FirebaseAuth.instance.currentUser != null,
-              child: IconButton(
-                  onPressed: widget.controller.signOut,
-                  icon: const Icon(Icons.logout)))
-        ],
+        title: const Text('Despesas'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: widget.controller.onExpenseAddButtonClicked,
@@ -59,7 +50,6 @@ class _ExpensesListPageState extends State<ExpensesListPage> {
       body: Column(
         //crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text('Despesas'),
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -103,25 +93,4 @@ class _ExpensesListPageState extends State<ExpensesListPage> {
     );
   }
 
-  Widget _userInfoTitleWidget() {
-    final user = FirebaseAuth.instance.currentUser;
-    return Row(
-      children: [
-        CircleAvatar(
-          child: CachedNetworkImage(
-            imageUrl: user?.photoURL ?? '',
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(image: imageProvider),
-                borderRadius: BorderRadius.circular(24),
-              ),
-            ),
-            errorWidget: (context, url, error) => const Icon(Icons.person),
-          ),
-        ),
-        const SizedBox(width: 16),
-        Text(user?.displayName ?? 'myselff'),
-      ],
-    );
-  }
 }

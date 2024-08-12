@@ -84,6 +84,9 @@ class MyselffTheme {
 
   static Color get colorSurfaceTint =>
       isDarkMode() ? darkColorScheme.surfaceTint : lightColorScheme.surfaceTint;
+  
+  static Color get colorOnPrimary =>
+      isDarkMode() ? darkColorScheme.onPrimary : lightColorScheme.onPrimary;
 
   static isDarkMode() {
     var brightness =
