@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:myselff_flutter/app/core/database/local_database.dart';
 
@@ -23,10 +22,11 @@ void main() async {
     ]);
 
     Animate.restartOnHotReload = true;
-    GoogleFonts.config.allowRuntimeFetching = false;
+
     await initializeDateFormatting('pt_BR', null);
 
     await LocalDatabase.initialize();
+    
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );

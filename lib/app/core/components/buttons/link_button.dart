@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 
 class LinkButton extends StatelessWidget {
   const LinkButton({
@@ -29,10 +28,10 @@ class LinkButton extends StatelessWidget {
           fontSize: fontSize ?? 12,
           decoration: decoration ?? TextDecoration.underline,
           color: enabled ?? true
-              ? color ?? MyselffTheme.colorPrimary
+              ? color ?? Colors.indigo
               : Colors.black26,
           decorationColor: enabled ?? true
-              ? color ?? MyselffTheme.colorPrimary
+              ? color ?? Colors.indigo
               : Colors.black26,
         ),
       ),

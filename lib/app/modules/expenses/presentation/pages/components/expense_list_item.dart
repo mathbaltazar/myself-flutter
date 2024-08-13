@@ -22,8 +22,8 @@ class _ExpenseListItem extends StatelessWidget {
               Icon(
                 Icons.paid,
                 color: expense.paid
-                    ? MyselffTheme.colorPrimary
-                    : MyselffTheme.colorError,
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.error,
               ),
               const SizedBox(width: 8),
               Expanded(

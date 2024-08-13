@@ -3,7 +3,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:myselff_flutter/app/core/components/containers/conditional.dart';
 import 'package:myselff_flutter/app/core/components/dialogs/confirmation_alert_dialog.dart';
 import 'package:myselff_flutter/app/core/components/lists/typed_list_view.dart';
-import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_detail_entity.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
 import 'package:myselff_flutter/app/modules/expenses/presentation/controllers/payment_types_controller.dart';
