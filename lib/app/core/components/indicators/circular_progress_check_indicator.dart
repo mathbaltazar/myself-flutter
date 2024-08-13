@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/color_schemes.g.dart';
 
 class CircularProgressCheckIndicator extends StatelessWidget {
   const CircularProgressCheckIndicator({
@@ -30,7 +29,7 @@ class CircularProgressCheckIndicator extends StatelessWidget {
           Icons.check_circle,
           size: 36,
           color: progressValue == 1
-              ? MyselffTheme.colorPrimary
+              ? Theme.of(context).colorScheme.primary
               : Colors.black54,
         ),
       ],

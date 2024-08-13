@@ -41,7 +41,7 @@ class _PaymentTypeDetailListItem extends StatelessWidget {
           title: 'Excluir o tipo de pagamento ?',
           onCancel: Modular.to.pop,
           confirmLabel: 'Excluir',
-          confirmLabelTextStyle: TextStyle(color: MyselffTheme.colorError),
+          confirmLabelTextStyle: TextStyle(color: Theme.of(context).colorScheme.error),
           onConfirm: () {
             controller.onDeleteConfirmationClick(paymentMethod);
             Modular.to.pop();

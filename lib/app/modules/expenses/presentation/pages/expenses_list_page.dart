@@ -7,7 +7,6 @@ import 'package:myselff_flutter/app/core/components/dialogs/confirmation_alert_d
 import 'package:myselff_flutter/app/core/components/indicators/circular_progress_check_indicator.dart';
 import 'package:myselff_flutter/app/core/components/lists/typed_list_view.dart';
 import 'package:myselff_flutter/app/core/components/mixins/bottom_sheet_mixin.dart';
-import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
 import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/entity/expense_entity.dart';
@@ -61,7 +60,7 @@ class _ExpensesListPageState extends State<ExpensesListPage> {
               'Despesas',
               style: TextStyle(
                 fontSize: 16,
-                color: MyselffTheme.colorPrimary,
+                color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.bold,
               ),
             ),

@@ -20,7 +20,7 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: MyselffTheme.colorPrimary,
+                      color: Theme.of(context).colorScheme.primary,
                     )),
               ),
               IconButton.filled(
@@ -30,7 +30,7 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
               IconButton.filled(
                 style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(MyselffTheme.colorError)),
+                        WidgetStateProperty.all(Theme.of(context).colorScheme.error)),
                 onPressed: () => _showDeleteConfirmation(context),
                 icon: const Icon(
                   Icons.delete_forever,
@@ -112,7 +112,7 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
       icon: const Icon(Icons.delete_rounded),
       title: 'Excluir a despesa ?',
       confirmLabel: 'Excluir',
-      confirmLabelTextStyle: TextStyle(color: MyselffTheme.colorError),
+      confirmLabelTextStyle: TextStyle(color: Theme.of(context).colorScheme.error),
       onCancel: Modular.to.pop,
       onConfirm: controller.onExpenseDetailsDeleteConfirmationButtonClicked,
     ).showAdaptive(context);

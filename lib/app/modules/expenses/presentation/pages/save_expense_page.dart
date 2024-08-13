@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myselff_flutter/app/core/components/buttons/link_button.dart';
-import 'package:myselff_flutter/app/core/theme/color_schemes.g.dart';
 import 'package:myselff_flutter/app/core/utils/mask_util.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
 import 'package:myselff_flutter/app/modules/expenses/presentation/controllers/save_expense_controller.dart';
@@ -42,7 +41,7 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
             Container(
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                  border: Border.all(color: MyselffTheme.colorOutline),
+                  border: Border.all(color: Theme.of(context).colorScheme.outline),
                   borderRadius: BorderRadius.circular(16)),
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -52,7 +51,7 @@ class _SaveExpensePageState extends State<SaveExpensePage> {
                   Text(
                     'Preencha os campos:',
                     style: TextStyle(
-                        color: MyselffTheme.colorPrimary, fontSize: 16),
+                        color: Theme.of(context).colorScheme.primary, fontSize: 16),
                   ),
                   const SizedBox(height: 15),
                   TextFormField(
