@@ -6,7 +6,7 @@ class HomePageController {
   final selectedPage = signal(0);
 
   selectPage(int page) {
-    selectedPage.set(page, force: true);
+    selectedPage.set(page);
 
     switch (page) {
       case 0:

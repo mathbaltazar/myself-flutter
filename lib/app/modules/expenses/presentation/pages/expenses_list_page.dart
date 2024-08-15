@@ -30,10 +30,11 @@ class ExpensesListPage extends StatefulWidget {
 
 class _ExpensesListPageState extends State<ExpensesListPage> {
   @override
-  void initState() {
-    super.initState();
-    // fetch the expenses from repository
-    widget.controller.getExpenses();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (mounted) {
+      widget.controller.getExpenses();
+    }
   }
 
   @override
