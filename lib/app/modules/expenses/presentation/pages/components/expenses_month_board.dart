@@ -26,7 +26,7 @@ class _ExpensesMonthBoardState extends State<_ExpensesMonthBoard>
       child: Row(
         children: [
           IconButton(
-            icon: const Icon(Icons.chevron_left),
+            icon: const FaIcon(FontAwesomeIcons.angleLeft),
             onPressed: () {
               startAnim = -1;
               animController?.forward(from: 0);
@@ -93,7 +93,7 @@ class _ExpensesMonthBoardState extends State<_ExpensesMonthBoard>
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.chevron_right_rounded),
+            icon: const FaIcon(FontAwesomeIcons.angleRight),
             onPressed: () {
               startAnim = 1;
               animController?.forward(from: 0);

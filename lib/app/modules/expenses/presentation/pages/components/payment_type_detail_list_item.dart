@@ -21,11 +21,20 @@ class _PaymentTypeDetailListItem extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () => controller.onEditPaymentTypeClick(paymentDetailEntity.paymentType),
-              icon: const Icon(Icons.edit),
+              icon: const FaIcon(FontAwesomeIcons.pen),
             ),
             IconButton(
-              onPressed: () => _showDeleteConfirmation(context, paymentDetailEntity.paymentType),
-              icon: const Icon(Icons.delete_rounded),
+              icon: const FaIcon(FontAwesomeIcons.trashCan),
+              onPressed: () => ConfirmationAlertDialog(
+                  title: 'Excluir o tipo de pagamento ?',
+                  onCancel: Modular.to.pop,
+                  confirmLabel: 'Excluir',
+                  confirmLabelTextStyle:
+                      TextStyle(color: Theme.of(context).colorScheme.error),
+                  onConfirm: () {
+                    controller.onDeleteConfirmationClick(paymentDetailEntity.paymentType);
+                    Modular.to.pop();
+                  }).showAdaptive(context),
             )
           ],
         ),
@@ -33,19 +42,4 @@ class _PaymentTypeDetailListItem extends StatelessWidget {
     );
   }
 
-  _showDeleteConfirmation(BuildContext context, PaymentTypeEntity paymentMethod) {
-    showAdaptiveDialog(
-      context: context,
-      builder: (_) => ConfirmationAlertDialog(
-          icon: const Icon(Icons.delete_rounded),
-          title: 'Excluir o tipo de pagamento ?',
-          onCancel: Modular.to.pop,
-          confirmLabel: 'Excluir',
-          confirmLabelTextStyle: TextStyle(color: Theme.of(context).colorScheme.error),
-          onConfirm: () {
-            controller.onDeleteConfirmationClick(paymentMethod);
-            Modular.to.pop();
-          }),
-    );
-  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myselff_flutter/app/core/extensions/object_extensions.dart';
 
 class MessageService {
@@ -37,7 +38,7 @@ class MessageService {
               behavior: SnackBarBehavior.floating,
               content: Row(
                 children: [
-                  const Icon(Icons.info, color: Colors.white70),
+                  const FaIcon(FontAwesomeIcons.circleExclamation, color: Colors.white70),
                   const SizedBox(width: 10),
                   Text(
                     message,

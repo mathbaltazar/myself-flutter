@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myselff_flutter/app/core/components/containers/conditional.dart';
 import 'package:myselff_flutter/app/core/components/icons/circular_progress_icon.dart';
-import 'package:myselff_flutter/app/core/components/icons/google_icon.dart';
-import 'package:myselff_flutter/app/core/extensions/object_extensions.dart';
 import 'package:myselff_flutter/app/modules/user/presentation/controllers/user_controller.dart';
 import 'package:signals/signals_flutter.dart';
 
-part 'components/user_image.dart';
 part 'components/authenticated_view.dart';
+part 'components/user_image.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({super.key, required this.controller});
@@ -63,7 +62,7 @@ class _UserPageState extends State<UserPage> {
                             icon: Conditional(
                               widget.controller.loading.get(),
                               onCondition: const CircularProgressIcon(),
-                              onElse: const GoogleIcon(),
+                              onElse: const FaIcon(FontAwesomeIcons.google),
                             ),
                             onPressed: widget.controller.onLoginWithGoogleClicked,
                             label: const Text('Entrar com Google'),

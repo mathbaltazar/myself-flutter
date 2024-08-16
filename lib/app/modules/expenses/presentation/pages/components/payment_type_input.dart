@@ -12,17 +12,16 @@ class _PaymentTypeInput extends StatelessWidget {
       controller: controller.paymentTypeInputTextController,
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
-          prefixIcon: const Icon(Icons.add_card),
-          label: const Text('Nome'),
+          label: Text(controller.editingPaymentType?.let((it) => 'Editar - ${it.name}') ?? 'Novo tipo de pagamento'),
           suffixIcon: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton.filledTonal(
                   onPressed: controller.onPaymentTypeInputConfirmClick,
-                  icon: const Icon(Icons.check)),
+                  icon: const FaIcon(FontAwesomeIcons.check)),
               IconButton.filledTonal(
                   onPressed: controller.onPaymentTypeInputCancelClick,
-                  icon: const Icon(Icons.cancel)),
+                  icon: const FaIcon(FontAwesomeIcons.xmark)),
             ],
           )),
     );

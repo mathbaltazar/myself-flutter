@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myselff_flutter/app/modules/home/presentation/controllers/home_page_controller.dart';
 import 'package:signals/signals_flutter.dart';
 
@@ -35,13 +36,13 @@ class _HomePageState extends State<HomePage> {
               onDestinationSelected: widget.controller.selectPage,
               destinations: const [
                 NavigationDestination(
-                  selectedIcon: Icon(Icons.monetization_on),
-                  icon: Icon(Icons.monetization_on_outlined),
+                  selectedIcon: FaIcon(FontAwesomeIcons.dollarSign),
+                  icon: FaIcon(FontAwesomeIcons.dollarSign),
                   label: 'Despesas',
                 ),
                 NavigationDestination(
-                  selectedIcon: Icon(Icons.account_circle),
-                  icon: Icon(Icons.account_circle_outlined),
+                  selectedIcon: FaIcon(FontAwesomeIcons.solidUser),
+                  icon: FaIcon(FontAwesomeIcons.user),
                   label: 'Usuário',
                 ),
               ],
