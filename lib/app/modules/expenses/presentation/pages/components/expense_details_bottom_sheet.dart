@@ -23,24 +23,51 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
                       color: Theme.of(context).colorScheme.primary,
                     )),
               ),
-              IconButton.filledTonal(
-                onPressed: controller.onExpenseDetailsPaidToggleButtonClicked,
-                icon: FaIcon(
-                  FontAwesomeIcons.checkDouble,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                tooltip: 'Marcar como pago',
-              ),
+              Watch.builder(builder: (_) => IconButton.filledTonal(
+                  icon: FaIcon(
+                    FontAwesomeIcons.checkDouble,
+                    color: controller.selectedExpense.get()!.paid
+                      ? null
+                      : Theme.of(context).colorScheme.primary,
+                  ),
+                  tooltip: 'Marcar como pago',
+                  onPressed: controller.selectedExpense.get()!.paid
+                      ? null
+                      : controller
+                          .onExpenseDetailsMarkAsPaidButtonClicked,
+                      )),
               IconButton.filled(
-                onPressed: controller.onExpenseDetailsEditButtonClicked,
                 icon: const FaIcon(FontAwesomeIcons.pen),
+                onPressed: controller.onExpenseDetailsEditButtonClicked,
               ),
               IconButton.filled(
+                icon: const FaIcon(FontAwesomeIcons.trashCan),
                 style: ButtonStyle(
                     backgroundColor:
                         WidgetStateProperty.all(Theme.of(context).colorScheme.error)),
                 onPressed: () => _showDeleteConfirmation(context),
-                icon: const FaIcon(FontAwesomeIcons.trashCan),
+              ),
+              MenuAnchor(
+                menuChildren: [
+                  MenuItemButton(
+                    child: const Text('Tipo de pagamento...'),
+                    onPressed: () => PaymentSelectDialog(
+                      onSelect: (selected) {
+                        controller.onExpenseDetailsPaymentTypeSelected(selected);
+                        Modular.to.pop();
+                      },
+                    ).showAdaptive(context),
+                  )
+                ],
+                builder: (_, menuController, __) => Watch.builder(
+                    builder: (_) => IconButton.filledTonal(
+                          icon: const FaIcon(FontAwesomeIcons.ellipsisVertical),
+                          onPressed: !controller.selectedExpense.get()!.paid
+                              ? null
+                              : () => menuController.isOpen
+                                  ? menuController.close()
+                                  : menuController.open(),
+                        )),
               ),
             ],
           ),
@@ -64,47 +91,28 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
           ),
           const SizedBox(height: 16),
           Row(
-                children: [
-                  const FaIcon(FontAwesomeIcons.creditCard),
-                  const SizedBox(width: 8),
-                  Watch.builder(builder: (_) => Text(
-                          controller.selectedExpense.get()!.paymentType?.name ??
-                              'Não definido.',
-                          style: TextStyle(
-                            fontStyle:
-                                controller.selectedExpense.get()!.paymentType == null
-                                    ? FontStyle.italic
-                                    : null,
-                          ),
-                        )
-                  ),
-                  const SizedBox(width: 10),
-                  Watch.builder(builder: (_) => Visibility(
-                          visible:
-                              controller.selectedExpense.get()!.paymentType == null,
-                          child: LinkButton(
-                            onClick: () => showAdaptiveDialog(
-                                  context: context,
-                                  builder: (context) => PaymentSelectDialog(
-                                        onSelect: (selected) {
-                                          controller.onExpenseDetailsPaymentTypeSelected(selected);
-                                          Modular.to.pop();
-                                        },
-                                      )),
-                            label: 'selecionar',
-                            enabled: controller.selectedExpense.get()!.paid,
-                          ),
-                        )
-                  ),
-                ],
-              ),
+            children: [
+              const FaIcon(FontAwesomeIcons.creditCard),
+              const SizedBox(width: 10),
+              Watch.builder(builder: (_) => Text(
+                        controller.selectedExpense.get()!.paymentType?.name ??
+                            'Não definido.',
+                        style: TextStyle(
+                          fontStyle:
+                              controller.selectedExpense.get()!.paymentType == null
+                                  ? FontStyle.italic
+                                  : null,
+                        ),
+                      )),
+            ],
+          ),
           const SizedBox(height: 20),
         ],
       ),
     );
   }
 
-  void _showDeleteConfirmation(BuildContext context) {
+  _showDeleteConfirmation(BuildContext context) {
     ConfirmationAlertDialog(
       title: 'Excluir a despesa ?',
       confirmLabel: 'Excluir',

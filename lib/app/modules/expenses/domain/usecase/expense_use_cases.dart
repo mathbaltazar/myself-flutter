@@ -48,24 +48,23 @@ class ExpenseUseCases {
     return _repository.deleteExpense(expenseId: expenseId);
   }
 
-  Future<Either<LocalDatabaseException, void>> togglePaid({required ExpenseEntity expenseEntity}) async {
-    // switch the boolean property "paid" of expense
-    expenseEntity.paid = !expenseEntity.paid;
-
-    // BR1: by expense marked as not paid, payment type must be null
-    if (!expenseEntity.paid) {
-      expenseEntity.paymentType = null;
-    }
-
+  Future<Either<LocalDatabaseException, void>> markAsPaid({required ExpenseEntity expenseEntity}) async {
+    // switch the boolean property "paid" of expense to true
+    expenseEntity.paid = true;
     // updates the expense
     return _repository.updateExpense(expenseEntity: expenseEntity);
   }
 
-  Future<Either<LocalDatabaseException, void>> setPaymentTypeForExpense(
-      {required ExpenseEntity expenseEntity,
-      required PaymentTypeEntity? paymentTypeEntity}) async {
+  Future<Either<LocalDatabaseException, void>> setPaymentTypeForExpense({
+    required ExpenseEntity expenseEntity,
+    required PaymentTypeEntity? paymentTypeEntity,
+  }) async {
     // set the payment type of expense
-    expenseEntity.paymentType = paymentTypeEntity;
+    if (paymentTypeEntity == PaymentTypeEntity.none()) {
+      expenseEntity.paymentType = null;
+    } else {
+      expenseEntity.paymentType = paymentTypeEntity;
+    }
     // updates the expense
     return _repository.updateExpense(expenseEntity: expenseEntity);
   }

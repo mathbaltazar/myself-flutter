@@ -98,17 +98,17 @@ class ExpensesListController {
     }
   }
 
-  onExpenseDetailsPaidToggleButtonClicked() async {
+  onExpenseDetailsMarkAsPaidButtonClicked() async {
     try {
-      // call to toggle paid expense use case
-      final result = await expenseUseCases.togglePaid(expenseEntity: selectedExpense.get()!);
+      // call to mark as paid expense use case
+      final result = await expenseUseCases.markAsPaid(expenseEntity: selectedExpense.get()!);
       // if error,  a message is displayed
       // if success, the paid is toggled, the current selected entity object state and list is updated
       // and a message is displayed
       result.fold(
         (error) => MessageService.showErrorMessage(error.message),
         (success) {
-          MessageService.showMessage('Alterado!');
+          MessageService.showMessage('Pago!');
           expensesList.replace((e) => e.id == selectedExpense.get()?.id, selectedExpense.get()!);
           selectedExpense.refresh();
         },
