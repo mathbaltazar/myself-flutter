@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../../extensions/object_extensions.dart';
 import '../mixins/dialog_mixin.dart';
 
-class ConfirmationAlertDialog extends StatelessWidget with DialogMixin {
+class ConfirmationAlertDialog extends StatelessWidget
+    with StatelessWidgetDialogMixin {
   const ConfirmationAlertDialog({
     super.key,
     this.icon,

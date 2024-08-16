@@ -8,14 +8,14 @@ class PaymentTypeSelectDialogController {
 
   final PaymentTypeUseCases paymentTypeUseCases;
 
-  final paymentTypeList = listSignal<PaymentTypeEntity>([]);
+  final paymentTypeList = listSignal<PaymentTypeEntity>([PaymentTypeEntity.none()]);
 
   getPaymentTypes() async {
     try {
       final result = await paymentTypeUseCases.getPaymentTypes();
       result.fold(
         (error) => MessageService.showErrorMessage('Erro ao buscar os tipos de pagamento'),
-        (items) => paymentTypeList.set(items),
+        (items) => paymentTypeList.addAll(items),
       );
     } on Exception {
       rethrow;
