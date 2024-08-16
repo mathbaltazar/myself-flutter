@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:myselff_flutter/app/core/components/buttons/link_button.dart';
 import 'package:myselff_flutter/app/core/components/containers/conditional.dart';
 import 'package:myselff_flutter/app/core/components/dialogs/confirmation_alert_dialog.dart';
 import 'package:myselff_flutter/app/core/components/indicators/circular_progress_check_indicator.dart';

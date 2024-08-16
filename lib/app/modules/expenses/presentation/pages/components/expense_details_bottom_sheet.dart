@@ -76,10 +76,17 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
             builder: (_) => Text(controller.selectedExpense.get()!.description,
                   style: const TextStyle(fontSize: 16))
           ),
+          const SizedBox(height: 8),
           Watch.builder(
             builder: (_) => Text(
                 controller.selectedExpense.get()!.paymentDate.format(),
-                style: const TextStyle(color: Colors.black54),
+                style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(.70),
+                    ),
               )
           ),
           const SizedBox(height: 10),
@@ -106,7 +113,6 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
                       )),
             ],
           ),
-          const SizedBox(height: 20),
         ],
       ),
     );
