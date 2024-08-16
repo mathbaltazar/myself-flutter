@@ -53,7 +53,7 @@ class _ExpensesMonthBoardState extends State<_ExpensesMonthBoard>
                                 style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black87),
+                                ),
                               )
                           ),
                           const SizedBox(height: 10),
@@ -73,8 +73,8 @@ class _ExpensesMonthBoardState extends State<_ExpensesMonthBoard>
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: widget.controller.totalUnpaid.get() == 0
-                                        ? Theme.of(context).colorScheme.primary.withAlpha(120)
-                                        : Theme.of(context).colorScheme.error.withAlpha(120)),
+                                        ? Theme.of(context).colorScheme.primary.withOpacity(.75)
+                                        : Theme.of(context).colorScheme.error.withOpacity(.7)),
                               )
                           ),
                         ],

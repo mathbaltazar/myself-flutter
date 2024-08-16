@@ -34,25 +34,32 @@ class _ExpenseListItem extends StatelessWidget {
                       expense.description,
                       softWrap: true,
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
                     Text(
                       expense.paymentDate.format(),
-                      style: const TextStyle(fontSize: 12, color: Colors.black54),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(.70),
+                      ),
                     ),
                     Text(
                       expense.paymentType?.name ?? 'Não definido.',
                       style: TextStyle(
                           fontSize: 10,
+                          fontWeight: expense.paymentType != null ? FontWeight.bold : null,
                           color: expense.paymentType == null
-                              ? Colors.black26
+                              ? Theme.of(context).colorScheme.onSurface.withOpacity(.42)
                               : null),
                     ),
                   ],
                 ),
               ),
+              const SizedBox(width: 8),
               Text(
                 '\$ ${expense.amount.formatCurrency()}',
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 16),
               ),
             ],
           ),
