@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myselff_flutter/app/core/components/buttons/link_button.dart';
 import 'package:myselff_flutter/app/core/components/containers/conditional.dart';
 import 'package:myselff_flutter/app/core/components/dialogs/confirmation_alert_dialog.dart';
@@ -45,7 +46,7 @@ class _ExpensesListPageState extends State<ExpensesListPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: widget.controller.onExpenseAddButtonClicked,
-        child: const Icon(Icons.add),
+        child: const FaIcon(FontAwesomeIcons.plus),
       ),
       body: Column(
         //crossAxisAlignment: CrossAxisAlignment.stretch,

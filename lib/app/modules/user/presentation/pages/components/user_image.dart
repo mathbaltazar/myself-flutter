@@ -9,40 +9,26 @@ class _UserImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: size ?? _defaultSize,
-        height: size ?? _defaultSize,
-        child: Uri.tryParse(url)?.let(
-          (it) => CachedNetworkImage(
-            imageUrl: url,
-            imageBuilder: (context, imageProvider) => Container(
-              margin: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.fill,
-                  filterQuality: FilterQuality.medium,
-                ),
-              ),
-            ),
-            errorWidget: (context, url, error) =>
-                _ErrorIcon(size: size ?? _defaultSize),
+    return CachedNetworkImage(
+      width: size ?? _defaultSize,
+      height: size ?? _defaultSize,
+      imageUrl: url,
+      imageBuilder: (context, imageProvider) => Container(
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          image: DecorationImage(
+            image: imageProvider,
+            fit: BoxFit.fill,
+            filterQuality: FilterQuality.medium,
           ),
-        ) ?? _ErrorIcon(size: size ?? _defaultSize));
-  }
-}
-
-class _ErrorIcon extends StatelessWidget {
-  const _ErrorIcon({required this.size});
-
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Icon(
-      Icons.account_circle,
-      size: size,
+        ),
+      ),
+      placeholder: (_, __) => const CircularProgressIndicator.adaptive(),
+      errorWidget: (context, url, error) => Padding(
+        padding: const EdgeInsets.all(10),
+        child: FaIcon(FontAwesomeIcons.solidCircleUser, size: size),
+      ),
     );
   }
 }

@@ -23,19 +23,25 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
                       color: Theme.of(context).colorScheme.primary,
                     )),
               ),
+              IconButton.filledTonal(
+                onPressed: controller.onExpenseDetailsPaidToggleButtonClicked,
+                icon: FaIcon(
+                  FontAwesomeIcons.checkDouble,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                tooltip: 'Marcar como pago',
+              ),
               IconButton.filled(
                 onPressed: controller.onExpenseDetailsEditButtonClicked,
-                icon: const Icon(Icons.edit),
+                icon: const FaIcon(FontAwesomeIcons.pen),
               ),
               IconButton.filled(
                 style: ButtonStyle(
                     backgroundColor:
                         WidgetStateProperty.all(Theme.of(context).colorScheme.error)),
                 onPressed: () => _showDeleteConfirmation(context),
-                icon: const Icon(
-                  Icons.delete_forever,
-                ),
-              )
+                icon: const FaIcon(FontAwesomeIcons.trashCan),
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -59,7 +65,7 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
           const SizedBox(height: 16),
           Row(
                 children: [
-                  const Icon(Icons.credit_card),
+                  const FaIcon(FontAwesomeIcons.creditCard),
                   const SizedBox(width: 8),
                   Watch.builder(builder: (_) => Text(
                           controller.selectedExpense.get()!.paymentType?.name ??
@@ -93,15 +99,6 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
                 ],
               ),
           const SizedBox(height: 20),
-          FilledButton.tonalIcon(
-            onPressed: controller.onExpenseDetailsPaidToggleButtonClicked,
-            icon: const Icon(Icons.paid),
-            label: Watch.builder(
-              builder: (_) => Text(
-                  'Marcar como ${controller.selectedExpense.get()!.paid ? 'não pago' : 'pago'}',
-                )
-            ),
-          )
         ],
       ),
     );
@@ -109,7 +106,6 @@ class _ExpenseDetailsBottomSheet extends StatelessWidget with BottomSheetMixin {
 
   void _showDeleteConfirmation(BuildContext context) {
     ConfirmationAlertDialog(
-      icon: const Icon(Icons.delete_rounded),
       title: 'Excluir a despesa ?',
       confirmLabel: 'Excluir',
       confirmLabelTextStyle: TextStyle(color: Theme.of(context).colorScheme.error),

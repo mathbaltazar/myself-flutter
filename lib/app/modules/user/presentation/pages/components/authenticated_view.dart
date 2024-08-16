@@ -25,9 +25,9 @@ class _AuthenticatedView extends StatelessWidget {
         ),
         const SizedBox(height: 100),
         OutlinedButton.icon(
-          icon: const Icon(Icons.logout),
+          icon: const FaIcon(FontAwesomeIcons.rightFromBracket),
           onPressed: onLogoutButtonClicked,
-          label: const Text('Sair'),
+          label: const Text('  Sair'),
         ),
       ],
     );

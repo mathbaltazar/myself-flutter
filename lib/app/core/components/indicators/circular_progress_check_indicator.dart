@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class CircularProgressCheckIndicator extends StatelessWidget {
@@ -22,15 +23,15 @@ class CircularProgressCheckIndicator extends StatelessWidget {
                 value: value,
                 strokeCap: StrokeCap.round,
                 strokeAlign: 12,
-                backgroundColor: Colors.black26,
+                backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
               ),
         ),
-        Icon(
-          Icons.check_circle,
+        FaIcon(
+          FontAwesomeIcons.listCheck,
           size: 36,
           color: progressValue == 1
               ? Theme.of(context).colorScheme.primary
-              : Colors.black54,
+              : Theme.of(context).colorScheme.secondaryContainer,
         ),
       ],
     );

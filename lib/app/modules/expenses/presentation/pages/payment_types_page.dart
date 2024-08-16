@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:myselff_flutter/app/core/components/containers/conditional.dart';
 import 'package:myselff_flutter/app/core/components/dialogs/confirmation_alert_dialog.dart';
 import 'package:myselff_flutter/app/core/components/lists/typed_list_view.dart';
+import 'package:myselff_flutter/app/core/extensions/object_extensions.dart';
 import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_detail_entity.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
 import 'package:myselff_flutter/app/modules/expenses/presentation/controllers/payment_types_controller.dart';
 import 'package:signals/signals_flutter.dart';
 
@@ -44,12 +45,12 @@ class _PaymentTypesPageState extends State<PaymentTypesPage> {
                 onCondition: _PaymentTypeInput(widget.controller),
                 onElse: Row(
                   children: [
-                    const Icon(Icons.credit_card),
+                    const FaIcon(FontAwesomeIcons.solidCreditCard),
                     const SizedBox(width: 8),
                     const Text('Tipos de pagamento'),
                     const Spacer(),
                     TextButton.icon(
-                        icon: const Icon(Icons.add),
+                        icon: const FaIcon(FontAwesomeIcons.plus),
                         onPressed: widget.controller.onAddNewPaymentTypeClick,
                         label: const Text('Adicionar')),
                   ],
