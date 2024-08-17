@@ -1,5 +1,5 @@
 name: myselff
-description: An app for individual assistance and auto organization.
+description: An app for individual assistance auto organization.
 publish_to: 'none'
 version: 0.1.0
 
@@ -33,6 +33,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/fonts/
-    - assets/images/
