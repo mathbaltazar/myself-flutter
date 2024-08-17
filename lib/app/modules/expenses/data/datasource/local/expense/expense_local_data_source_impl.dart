@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
-import 'package:myselff_flutter/app/core/database/local_database.dart';
-import 'package:myselff_flutter/app/core/exceptions/database_exception.dart';
+import 'package:myselff/app/core/database/local_database.dart';
+import 'package:myselff/app/core/exceptions/database_exception.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../_collections/expense_collection.dart';

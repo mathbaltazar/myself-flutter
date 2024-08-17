@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myselff_flutter/app/core/extensions/object_extensions.dart';
+import 'package:myselff/app/core/extensions/object_extensions.dart';
 
 class TypedListView<T> extends StatelessWidget {
   const TypedListView({

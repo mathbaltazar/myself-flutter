@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:myselff_flutter/app/core/exceptions/database_exception.dart';
-import 'package:myselff_flutter/app/core/extensions/object_extensions.dart';
+import 'package:myselff/app/core/exceptions/database_exception.dart';
+import 'package:myselff/app/core/extensions/object_extensions.dart';
 
 import '../../domain/entity/expense_entity.dart';
 import '../../domain/repository/expense_repository.dart';

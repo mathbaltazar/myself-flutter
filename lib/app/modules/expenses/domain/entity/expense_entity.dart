@@ -1,4 +1,4 @@
-import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
+import 'package:myselff/app/modules/expenses/domain/entity/payment_type_entity.dart';
 
 class ExpenseEntity {
   ExpenseEntity({

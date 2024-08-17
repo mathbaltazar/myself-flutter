@@ -1,7 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:myselff_flutter/app/app_module.dart';
-import 'package:myselff_flutter/app/core/constants/route_constants.dart';
-import 'package:myselff_flutter/app/core/services/injection_service.dart';
+import 'package:myselff/app/app_module.dart';
+import 'package:myselff/app/core/constants/route_constants.dart';
+import 'package:myselff/app/core/services/injection_service.dart';
 
 import 'data/datasource/local/expense/expense_local_data_source.dart';
 import 'data/datasource/local/expense/expense_local_data_source_impl.dart';

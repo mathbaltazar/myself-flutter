@@ -1,8 +1,8 @@
 import 'dart:collection';
 
-import 'package:myselff_flutter/app/core/extensions/bool_extensions.dart';
-import 'package:myselff_flutter/app/core/extensions/string_extensions.dart';
-import 'package:myselff_flutter/app/core/utils/type_converters.dart';
+import 'package:myselff/app/core/extensions/bool_extensions.dart';
+import 'package:myselff/app/core/extensions/string_extensions.dart';
+import 'package:myselff/app/core/utils/type_converters.dart';
 
 import '../../../../domain/entity/expense_entity.dart';
 import '../../_mappers/entity_mapper.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:myselff_flutter/app/core/constants/route_constants.dart';
-import 'package:myselff_flutter/app/core/services/injection_service.dart';
-import 'package:myselff_flutter/app/modules/expenses/expense_module.dart';
-import 'package:myselff_flutter/app/modules/home/presentation/controllers/home_page_controller.dart';
-import 'package:myselff_flutter/app/modules/home/presentation/pages/home_page.dart';
-import 'package:myselff_flutter/app/modules/user/user_module.dart';
+import 'package:myselff/app/core/constants/route_constants.dart';
+import 'package:myselff/app/core/services/injection_service.dart';
+import 'package:myselff/app/modules/expenses/expense_module.dart';
+import 'package:myselff/app/modules/home/presentation/controllers/home_page_controller.dart';
+import 'package:myselff/app/modules/home/presentation/pages/home_page.dart';
+import 'package:myselff/app/modules/user/user_module.dart';
 
 class HomeModule extends Module {
 

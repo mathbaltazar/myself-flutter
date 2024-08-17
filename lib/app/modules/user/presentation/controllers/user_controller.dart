@@ -1,6 +1,6 @@
-import 'package:myselff_flutter/app/core/services/message_service.dart';
-import 'package:myselff_flutter/app/modules/user/domain/entity/user_entity.dart';
-import 'package:myselff_flutter/app/modules/user/domain/usecases/user_use_cases.dart';
+import 'package:myselff/app/core/services/message_service.dart';
+import 'package:myselff/app/modules/user/domain/entity/user_entity.dart';
+import 'package:myselff/app/modules/user/domain/usecases/user_use_cases.dart';
 import 'package:signals/signals.dart';
 
 class UserController {
