@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:myselff_flutter/app/core/exceptions/remote_exception.dart';
-import 'package:myselff_flutter/app/modules/user/data/datasources/user_data_source.dart';
-import 'package:myselff_flutter/app/modules/user/data/mappers/firebase_user_mapper_extensions.dart';
-import 'package:myselff_flutter/app/modules/user/domain/entity/user_entity.dart';
-import 'package:myselff_flutter/app/modules/user/domain/repository/user_repository.dart';
+import 'package:myselff/app/core/exceptions/remote_exception.dart';
+import 'package:myselff/app/modules/user/data/datasources/user_data_source.dart';
+import 'package:myselff/app/modules/user/data/mappers/firebase_user_mapper_extensions.dart';
+import 'package:myselff/app/modules/user/domain/entity/user_entity.dart';
+import 'package:myselff/app/modules/user/domain/repository/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl(this._userDataSource);

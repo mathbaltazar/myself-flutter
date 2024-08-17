@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:myselff_flutter/app/core/services/message_service.dart';
-import 'package:myselff_flutter/app/core/theme/app_theme.dart';
+import 'package:myselff/app/core/services/message_service.dart';
+import 'package:myselff/app/core/theme/app_theme.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});

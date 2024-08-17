@@ -1,7 +1,7 @@
-import 'package:myselff_flutter/app/core/constants/database_constants.dart';
-import 'package:myselff_flutter/app/core/exceptions/database_exception.dart';
-import 'package:myselff_flutter/app/modules/expenses/data/datasource/local/_collections/expense_collection.dart';
-import 'package:myselff_flutter/app/modules/expenses/data/datasource/local/_collections/payment_type_collection.dart';
+import 'package:myselff/app/core/constants/database_constants.dart';
+import 'package:myselff/app/core/exceptions/database_exception.dart';
+import 'package:myselff/app/modules/expenses/data/datasource/local/_collections/expense_collection.dart';
+import 'package:myselff/app/modules/expenses/data/datasource/local/_collections/payment_type_collection.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 

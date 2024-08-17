@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:myselff_flutter/app/core/components/containers/conditional.dart';
-import 'package:myselff_flutter/app/core/components/icons/circular_progress_icon.dart';
-import 'package:myselff_flutter/app/modules/user/presentation/controllers/user_controller.dart';
+import 'package:myselff/app/core/components/containers/conditional.dart';
+import 'package:myselff/app/core/components/icons/circular_progress_icon.dart';
+import 'package:myselff/app/modules/user/presentation/controllers/user_controller.dart';
 import 'package:signals/signals_flutter.dart';
 
 part 'components/authenticated_view.dart';

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:myselff_flutter/app/core/constants/route_constants.dart';
-import 'package:myselff_flutter/app/core/services/injection_service.dart';
+import 'package:myselff/app/core/constants/route_constants.dart';
+import 'package:myselff/app/core/services/injection_service.dart';
 
 import 'data/datasources/user_data_source.dart';
 import 'data/datasources/user_data_source_impl.dart';

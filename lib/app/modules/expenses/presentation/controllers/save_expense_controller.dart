@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:myselff_flutter/app/core/constants/route_constants.dart';
-import 'package:myselff_flutter/app/core/extensions/object_extensions.dart';
-import 'package:myselff_flutter/app/core/services/message_service.dart';
-import 'package:myselff_flutter/app/core/utils/formatters/currency_formatter.dart';
-import 'package:myselff_flutter/app/core/utils/formatters/date_formatter.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/entity/expense_entity.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/usecase/expense_use_cases.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/usecase/payment_type_use_cases.dart';
+import 'package:myselff/app/core/constants/route_constants.dart';
+import 'package:myselff/app/core/extensions/object_extensions.dart';
+import 'package:myselff/app/core/services/message_service.dart';
+import 'package:myselff/app/core/utils/formatters/currency_formatter.dart';
+import 'package:myselff/app/core/utils/formatters/date_formatter.dart';
+import 'package:myselff/app/modules/expenses/domain/entity/expense_entity.dart';
+import 'package:myselff/app/modules/expenses/domain/entity/payment_type_entity.dart';
+import 'package:myselff/app/modules/expenses/domain/usecase/expense_use_cases.dart';
+import 'package:myselff/app/modules/expenses/domain/usecase/payment_type_use_cases.dart';
 import 'package:signals/signals.dart';
 
 class SaveExpenseController {

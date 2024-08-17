@@ -1,8 +1,8 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:myselff_flutter/app/core/exceptions/remote_exception.dart';
-import 'package:myselff_flutter/app/modules/user/domain/entity/user_entity.dart';
-import 'package:myselff_flutter/app/modules/user/domain/repository/user_repository.dart';
+import 'package:myselff/app/core/exceptions/remote_exception.dart';
+import 'package:myselff/app/modules/user/domain/entity/user_entity.dart';
+import 'package:myselff/app/modules/user/domain/repository/user_repository.dart';
 
 class UserUseCases {
   UserUseCases(this._repository);

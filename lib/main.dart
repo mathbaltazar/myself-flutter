@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:myselff_flutter/app/core/database/local_database.dart';
+import 'package:myselff/app/core/database/local_database.dart';
 
 import 'app/app_module.dart';
 import 'app/app_widget.dart';

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:myselff_flutter/app/core/components/containers/conditional.dart';
-import 'package:myselff_flutter/app/core/components/dialogs/confirmation_alert_dialog.dart';
-import 'package:myselff_flutter/app/core/components/lists/typed_list_view.dart';
-import 'package:myselff_flutter/app/core/extensions/object_extensions.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_detail_entity.dart';
-import 'package:myselff_flutter/app/modules/expenses/presentation/controllers/payment_types_controller.dart';
+import 'package:myselff/app/core/components/containers/conditional.dart';
+import 'package:myselff/app/core/components/dialogs/confirmation_alert_dialog.dart';
+import 'package:myselff/app/core/components/lists/typed_list_view.dart';
+import 'package:myselff/app/core/extensions/object_extensions.dart';
+import 'package:myselff/app/modules/expenses/domain/entity/payment_type_detail_entity.dart';
+import 'package:myselff/app/modules/expenses/presentation/controllers/payment_types_controller.dart';
 import 'package:signals/signals_flutter.dart';
 
 part 'components/payment_type_detail_list_item.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:myselff_flutter/app/core/components/buttons/link_button.dart';
-import 'package:myselff_flutter/app/core/utils/mask_util.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
-import 'package:myselff_flutter/app/modules/expenses/presentation/controllers/save_expense_controller.dart';
+import 'package:myselff/app/core/components/buttons/link_button.dart';
+import 'package:myselff/app/core/utils/mask_util.dart';
+import 'package:myselff/app/modules/expenses/domain/entity/payment_type_entity.dart';
+import 'package:myselff/app/modules/expenses/presentation/controllers/save_expense_controller.dart';
 import 'package:signals/signals_flutter.dart';
 
 class SaveExpensePage extends StatefulWidget {

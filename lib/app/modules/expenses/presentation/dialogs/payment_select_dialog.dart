@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:myselff_flutter/app/core/components/lists/typed_list_view.dart';
-import 'package:myselff_flutter/app/core/components/mixins/dialog_mixin.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
-import 'package:myselff_flutter/app/modules/expenses/presentation/controllers/payment_type_select_dialog_controller.dart';
+import 'package:myselff/app/core/components/lists/typed_list_view.dart';
+import 'package:myselff/app/core/components/mixins/dialog_mixin.dart';
+import 'package:myselff/app/modules/expenses/domain/entity/payment_type_entity.dart';
+import 'package:myselff/app/modules/expenses/presentation/controllers/payment_type_select_dialog_controller.dart';
 import 'package:signals/signals_flutter.dart';
 
 class PaymentSelectDialog extends StatefulWidget

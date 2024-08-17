@@ -1,5 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:myselff_flutter/app/core/constants/route_constants.dart';
+import 'package:myselff/app/core/constants/route_constants.dart';
 import 'package:signals/signals.dart';
 
 class HomePageController {

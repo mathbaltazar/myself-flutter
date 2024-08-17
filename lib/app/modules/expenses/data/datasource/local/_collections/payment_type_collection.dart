@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:myselff_flutter/app/core/extensions/string_extensions.dart';
+import 'package:myselff/app/core/extensions/string_extensions.dart';
 
 import '../../../../domain/entity/payment_type_entity.dart';
 import '../../_mappers/entity_mapper.dart';

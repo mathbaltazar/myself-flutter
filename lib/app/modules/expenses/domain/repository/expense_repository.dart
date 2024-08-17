@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:myselff_flutter/app/core/exceptions/database_exception.dart';
+import 'package:myselff/app/core/exceptions/database_exception.dart';
 
 import '../entity/expense_entity.dart';
 

@@ -1,4 +1,4 @@
-import 'package:myselff_flutter/app/modules/expenses/data/datasource/local/_collections/payment_type_collection.dart';
+import 'package:myselff/app/modules/expenses/data/datasource/local/_collections/payment_type_collection.dart';
 
 import '../_collections/payment_type_detail_collection.dart';
 

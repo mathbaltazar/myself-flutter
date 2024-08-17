@@ -1,6 +1,6 @@
-import 'package:myselff_flutter/app/core/services/message_service.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/entity/payment_type_entity.dart';
-import 'package:myselff_flutter/app/modules/expenses/domain/usecase/payment_type_use_cases.dart';
+import 'package:myselff/app/core/services/message_service.dart';
+import 'package:myselff/app/modules/expenses/domain/entity/payment_type_entity.dart';
+import 'package:myselff/app/modules/expenses/domain/usecase/payment_type_use_cases.dart';
 import 'package:signals/signals.dart';
 
 class PaymentTypeSelectDialogController {
